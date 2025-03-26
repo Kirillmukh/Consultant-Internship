@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Просмотр документа и навигация по рискам</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    /* Верхняя панель с загрузкой файла */
+    #top-bar {
+      padding: 10px;
+      background: #f0f0f0;
+      border-bottom: 1px solid #ccc;
+    }
+    /* Основное содержимое – две колонки */
+    #main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    /* Левая колонка – список рисков */
+    #risk-list {
+      width: 30%;
+      overflow-y: auto;
+      border-right: 1px solid #ccc;
+      padding: 10px;
+    }
+    /* Правая колонка – предпросмотр документа */
+    #doc-viewer {
+      width: 70%;
+      overflow-y: auto;
+      padding: 10px;
+      position: relative;
+    }
+    /* Стили для PDF-канвасов */
+    .pdf-page {
+      display: block;
+      margin: 10px auto;
+      border: 1px solid #000;
+      position: relative;
+    }
+    /* Стили для абзацев в doc/docx */
+    #doc-content p {
+      margin: 15px 0;
+      padding: 5px;
+    }
+    /* Стили для выделения найденного абзаца */
+    .highlight {
+      background-color: yellow;
+      transition: background-color 2s ease;
+    }
+    /* Кнопка перехода для риска */
+    .risk-item {
+      margin-bottom: 10px;
+      padding: 5px;
+      border: 1px solid #ddd;
+    }
+    .risk-item button {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="top-bar">
+    <input type="file" id="file-input" accept=".pdf,.doc,.docx" />
+  </div>
+  <div id="main">
+    <!-- Левая колонка: список рисковых предложений -->
+    <div id="risk-list">
+      <h3>Список рисков</h3>
+      <div id="risk-container">
+        <!-- Здесь динамически заполняются рисковые предложения с кнопками -->
+      </div>
+    </div>
+    <!-- Правая колонка: окно предпросмотра документа -->
+    <div id="doc-viewer">
+      <!-- Для PDF будем использовать pdf-container, для doc/docx – doc-content -->
+      <div id="pdf-container" style="display: none;"></div>
+      <div id="doc-content" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- Подключаем библиотеки -->
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js"></script>
+  <!-- Mammoth.js для docx -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
