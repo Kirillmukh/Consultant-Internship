@@ -2,7 +2,9 @@
   <div id="app">
     <header>
       <div class="container">
-        <h1>СмартФранчайз</h1>
+        <h1>
+          <router-link to="/" class="home-link">СмартФранчайз</router-link>
+        </h1>
         <p>Ваш юридический помощник в мире франчайзинга</p>
       </div>
     </header>
@@ -10,7 +12,7 @@
       <router-view />
     </main>
     <footer>
-      <p>&copy; 2025 СмартФранчайз. Все права защищены.</p>
+      <p>&copy; 2025 СмартФранчайз. Сделано командой 4</p>
     </footer>
   </div>
 </template>
@@ -36,11 +38,11 @@ export default {
 
 /* Стили для заголовка */
 header {
-  background: linear-gradient(135deg, #4caf50, #81c784);
-  color: white;
-  padding: 40px 20px;
+  background: #f5f5f5;
+  color: #333;
+  padding: 30px 20px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header .container {
@@ -49,15 +51,25 @@ header .container {
 }
 
 header h1 {
-  font-size: 36px;
+  font-size: 32px;
   margin: 0;
   font-weight: bold;
 }
 
+header h1 .home-link {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+header h1 .home-link:hover {
+  color: #4caf50;
+}
+
 header p {
-  font-size: 18px;
+  font-size: 16px;
   margin-top: 10px;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 /* Стили для основного контента */
@@ -84,11 +96,11 @@ footer p {
 /* Адаптивность */
 @media (max-width: 768px) {
   header h1 {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   header p {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   main {
