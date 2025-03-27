@@ -34,6 +34,7 @@
               :name="'question-' + currentQuestion.id"
               :value="option.id"
               v-model="answers[currentQuestion.id]"
+              @change="saveProgress"
             />
             {{ option.text }}
             <span
@@ -59,6 +60,9 @@
       <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers">
         Отправить ответы
       </button>
+  
+      <!-- Кнопка сброса -->
+      <button class="reset-button" @click="resetProgress">Сбросить</button>
     </div>
   </template>
   
@@ -78,70 +82,67 @@
       },
     },
     methods: {
-      async fetchQuestions() {
-        // Симуляция данных с сервера
-        this.questions = [
-          {
-            id: 1,
-            text: "Какова продолжительность договора франчайзинга?",
-            type: "single-choice",
-            explanation: "Продолжительность договора определяет срок, на который вы заключаете соглашение с франчайзером.",
-            options: [
-              {
-                id: "a",
-                text: "1 год"
-              },
-              {
-                id: "b",
-                text: "3 года"
-              },
-              {
-                id: "c",
-                text: "5 лет"
-              },
-            ],
-          },
-          {
-            id: 2,
-            text: "Какие платежи предусмотрены договором?",
-            type: "single-choice",
-            explanation: "Платежи могут включать паушальный взнос, роялти и другие сборы.",
-            options: [
-              {
-                id: "a",
-                text: "Только паушальный взнос",
-                explanation: "Единовременный платеж за право использования франшизы.",
-              },
-              {
-                id: "b",
-                text: "Паушальный взнос и роялти",
-                explanation: "Роялти — это регулярные платежи за использование бренда.",
-              },
-              {
-                id: "c",
-                text: "Паушальный взнос, роялти и маркетинговые сборы",
-                explanation: "Дополнительные сборы могут включать расходы на рекламу.",
-              },
-            ],
-          },
-        ];
-      },
+        async fetchQuestions() {
+            try {
+                // Запрос к API для получения списка вопросов
+                const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/questions`);
+                const data = await response.json();
+
+                if (data.success) {
+                // Успешно получили вопросы
+                this.questions = data.data;
+                } else {
+                throw new Error("Не удалось загрузить вопросы");
+                }
+            } catch (error) {
+                console.error("Ошибка загрузки вопросов:", error);
+                alert("Не удалось загрузить вопросы. Попробуйте позже.");
+            }
+            this.loadProgress();
+        },
       nextQuestion() {
         if (this.currentQuestionIndex < this.questions.length - 1) {
           this.currentQuestionIndex++;
+          this.saveProgress();
         }
       },
       prevQuestion() {
         if (this.currentQuestionIndex > 0) {
           this.currentQuestionIndex--;
+          this.saveProgress();
         }
       },
       goToQuestion(index) {
         this.currentQuestionIndex = index;
+        this.saveProgress();
       },
       submitAnswers() {
-        console.log(this.answers); // Отправка ответов на сервер
-        alert("Ваши ответы отправлены!");
+        // Переход на страницу результатов
+        this.$router.push({ name: "results" });
+      },
+      saveProgress() {
+        // Сохранение текущего прогресса в localStorage
+        localStorage.setItem("riskAssessmentAnswers", JSON.stringify(this.answers));
+        localStorage.setItem("riskAssessmentCurrentQuestion", this.currentQuestionIndex);
+      },    
+      loadProgress() {
+        // Загрузка прогресса из localStorage
+        const savedAnswers = localStorage.getItem("riskAssessmentAnswers");
+        const savedQuestionIndex = localStorage.getItem("riskAssessmentCurrentQuestion");
+  
+        if (savedAnswers) {
+          this.answers = JSON.parse(savedAnswers);
+        }
+        if (savedQuestionIndex) {
+          this.currentQuestionIndex = parseInt(savedQuestionIndex, 10);
+        }
+      },
+      resetProgress() {
+        // Сброс прогресса
+        this.answers = {};
+        this.currentQuestionIndex = 0;
+        localStorage.removeItem("riskAssessmentAnswers");
+        localStorage.removeItem("riskAssessmentCurrentQuestion");
       },
     },
     mounted() {
@@ -219,5 +220,14 @@
   button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+  }
+  
+  .reset-button {
+    margin-top: 20px;
+    background-color: #dc3545;
+  }
+  
+  .reset-button:hover {
+    background-color: #c82333;
   }
   </style>
