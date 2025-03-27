@@ -9,7 +9,7 @@
           v-for="(question, index) in questions"
           :key="question.id"
           class="progress-item"
-          :class="{ active: currentQuestionIndex === index, completed: index < currentQuestionIndex }"
+          :class="{ active: currentQuestionIndex === index, completed: answers[question.id] !== undefined }"
           @click="goToQuestion(index)"
           :title="question.text"
         ></div>
@@ -57,7 +57,10 @@
       </div>
   
       <!-- Кнопка отправки -->
-      <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers">
+      <button 
+        v-if="currentQuestionIndex === questions.length - 1" 
+        @click="submitAnswers" 
+        :disabled="Object.keys(answers).length !== questions.length">
         Отправить ответы
       </button>
   
