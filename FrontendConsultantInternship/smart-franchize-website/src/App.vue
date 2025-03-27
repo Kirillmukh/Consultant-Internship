@@ -20,6 +20,49 @@
 <script>
 export default {
   name: 'App',
+  data() {
+    return {
+      heartbeatInterval: null, // Таймер для heartbeat
+    };
+  },
+  methods: {
+    sendHeartbeat() {
+      // Собираем данные о текущем состоянии
+      const data = {
+        timestamp: new Date().toISOString(),
+        currentPage: this.$route.name, // Текущая страница
+        userAgent: navigator.userAgent, // Информация о браузере
+      };
+
+      // Отправляем данные на сервер
+      fetch(`${process.env.VUE_APP_BACKEND_URL}/api/heartbeat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Ошибка при отправке heartbeat');
+          }
+          console.log('Heartbeat отправлен:', data);
+        })
+        .catch((error) => {
+          console.error('Ошибка heartbeat:', error);
+        });
+    },
+  },
+  mounted() {
+    // Запускаем heartbeat при загрузке приложения
+    this.heartbeatInterval = setInterval(this.sendHeartbeat, 30000); // Отправка каждые 30 секунд
+  },
+  beforeUnmount() {
+    // Очищаем таймер при уничтожении компонента
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+    }
+  },
 };
 </script>
 
