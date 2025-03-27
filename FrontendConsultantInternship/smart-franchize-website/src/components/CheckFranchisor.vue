@@ -1,23 +1,35 @@
 <template>
     <div class="check-franchisor">
-        <h1>Check Franchisor</h1>
+        <h1>Проверить франчайзера</h1>
         <form @submit.prevent="handleSubmit">
             <div class="form-group">
-                <label for="franchisorName">Franchisor Name:</label>
+                <label for="franchisorName">Название франшизы:</label>
                 <input
                     type="text"
                     id="franchisorName"
                     v-model="franchisorName"
-                    placeholder="Enter franchisor name"
+                    placeholder="Введите название франшизы"
                 />
             </div>
-            <button type="submit">Check</button>
+            <button type="submit" :disabled="loading">Проверить</button>
         </form>
-        <div v-if="franchisorDetails" class="details">
-            <h2>Franchisor Details</h2>
-            <p><strong>Name:</strong> {{ franchisorDetails.name }}</p>
-            <p><strong>Location:</strong> {{ franchisorDetails.location }}</p>
-            <p><strong>Status:</strong> {{ franchisorDetails.status }}</p>
+
+        <!-- Анимация ожидания -->
+        <div v-if="loading" class="loading">
+            <p>Загрузка...</p>
+        </div>
+
+        <!-- Результаты -->
+        <div v-if="franchisorDetails && !loading" class="details">
+            <h2>Детали франчайзера</h2>
+            <p><strong>Название:</strong> {{ franchisorDetails.name }}</p>
+            <p><strong>Локация:</strong> {{ franchisorDetails.location }}</p>
+            <p><strong>Статус:</strong> {{ franchisorDetails.status }}</p>
+        </div>
+
+        <!-- Ошибка -->
+        <div v-if="error && !loading" class="error">
+            <p>{{ error }}</p>
         </div>
     </div>
 </template>
@@ -27,18 +39,49 @@ export default {
     name: "CheckFranchisor",
     data() {
         return {
-            franchisorName: "",
-            franchisorDetails: null,
+            franchisorName: "", // Название франшизы
+            franchisorDetails: null, // Детали франшизы
+            loading: false, // Состояние загрузки
+            error: null, // Сообщение об ошибке
         };
     },
     methods: {
-        handleSubmit() {
-            // Simulate fetching franchisor details
-            this.franchisorDetails = {
-                name: this.franchisorName,
-                location: "New York, USA",
-                status: "Active",
-            };
+        async handleSubmit() {
+            if (!this.franchisorName.trim()) {
+                this.error = "Введите название франшизы.";
+                return;
+            }
+
+            this.loading = true;
+            this.error = null;
+            this.franchisorDetails = null;
+
+            try {
+                // Отправка запроса на бэкенд
+                const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/check-franchisor`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ name: this.franchisorName }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка при проверке франчайзера.");
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    this.franchisorDetails = data.data;
+                } else {
+                    throw new Error(data.error || "Не удалось получить данные о франчайзере.");
+                }
+            } catch (error) {
+                this.error = error.message;
+            } finally {
+                this.loading = false;
+            }
         },
     },
 };
@@ -79,8 +122,20 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+button:hover:enabled {
     background-color: #0056b3;
+}
+
+.loading {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #555;
 }
 
 .details {
@@ -89,5 +144,11 @@ button:hover {
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #fff;
+}
+
+.error {
+    margin-top: 20px;
+    color: red;
+    font-weight: bold;
 }
 </style>
