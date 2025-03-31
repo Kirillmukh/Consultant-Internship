@@ -1,10 +1,9 @@
 <!-- filepath: c:\Users\dnsco\code\consultant_internship\Consultant-Internship\FrontendConsultantInternship\smart-franchize-website\src\components\HomePage.vue -->
 <template>
   <div class="home-page">
-    <h1>Добро пожаловать на СмартФранчайз</h1>
+    <h1>Здесь будет приветствие</h1>
     <p>
-      СмартФранчайз — это юридический инструмент, который помогает потенциальным франчайзи
-      найти больше информации о договоре франчайзинга, который они хотят выбрать.
+      Здесь будет описание
     </p>
     <div class="buttons">
       <button @click="navigateTo('about-franchising')">О франчайзинге</button>

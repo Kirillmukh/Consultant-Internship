@@ -5,7 +5,6 @@
         <h1>
           <router-link to="/" class="home-link">СмартФранчайз</router-link>
         </h1>
-        <p>Ваш юридический помощник в мире франчайзинга</p>
       </div>
     </header>
     <main>
