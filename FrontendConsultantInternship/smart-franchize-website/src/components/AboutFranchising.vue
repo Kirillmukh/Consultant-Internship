@@ -11,3 +11,11 @@ export default {
   name: 'AboutFranchising',
 };
 </script>
+
+<style scoped>
+h1{
+  font-family: 'Tektur';
+
+  font-weight: 400;
+}
+</style>

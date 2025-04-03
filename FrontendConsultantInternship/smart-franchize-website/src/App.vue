@@ -1,10 +1,15 @@
 <template>
   <div id="app">
     <header>
-      <div class="container">
-        <h1>
-          <router-link to="/" class="home-link">СмартФранчайз</router-link>
-        </h1>
+      <div class="logo">
+        <router-link to="/" class="home-link">Смарт Франчайз</router-link>
+      </div>
+      <div class="navigations">
+ 
+        <router-link to="/" class="navigations_item">О нас<div class="underline"></div></router-link>
+        <router-link to='/about-franchising' class="navigations_item">Q/A<br> о франчайзинге<div class="underline"></div></router-link>
+        <router-link to="/check-franchisor" class="navigations_item">Проверить франчайзера<div class="underline"></div></router-link>
+        <router-link to="/risk-assessment" class="navigations_item">Оценить риски<div class="underline"></div></router-link>
       </div>
     </header>
     <main>
@@ -22,6 +27,12 @@ export default {
   data() {
     return {
       heartbeatInterval: null, // Таймер для heartbeat
+      links: [
+        { path: '/', title: 'О нас' },
+        { path: '/about-franchising', title: 'О франчайзинге' },
+        { path: '/risk-assessment', title: 'Оценить риски' },
+        { path: '/check-franchisor', title: 'Проверить франчайзера' }
+      ]
     };
   },
   methods: {
@@ -80,32 +91,99 @@ export default {
 
 /* Стили для заголовка */
 header {
-  background: #f5f5f5;
-  color: #333;
-  padding: 30px 20px;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-header .container {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
+  padding: 0px 20px;
+  text-align: center;
+  font-family: 'Tektur';
+
+  font-weight: 500;
 }
 
-header h1 {
-  font-size: 32px;
-  margin: 0;
-  font-weight: bold;
+.logo {
+  
+  position: relative;
+
+  width: 70px; /* Ширина блока */
+  height: 70px; /* Высота блока */
+  margin: 0px;
+  top: 30px;
+  left: 0px;
+  background: #AEADF0; /* Цвет фона */
+  border: 1px solid #000000;
+  
+  font-size: clamp(12px, 0.5vw, 18px);
+  
 }
 
-header h1 .home-link {
-  color: #333;
+header .home-link {
+  position: absolute;        /* Абсолютное позиционирование */
+  bottom: 5px;           /* Отступ от нижнего края */
+  left: 5px;
+  right: 1px;
+  color: #000000;
   text-decoration: none;
+  text-align: left; 
+  line-height: 1;
+  transition: color 0.3s ease;
+
+  z-index: 1;        /* Поднимаем над фоном */
+  
+  max-width: 100%;
+}
+
+header .home-link:hover {
+  color: #ffffff;
+}
+
+header .navigations{
+  position: relative; 
+  display: flex;
+  justify-content: flex-end;
+  align-items: right;
+  bottom: 50px;
+}
+
+header .navigations_item{
+  height: 80px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  position: relative; 
+  margin: 10px;
+  color: #626262;
+  text-decoration: none;
+  font-size: 18px;
+
   transition: color 0.3s ease;
 }
 
-header h1 .home-link:hover {
-  color: #4caf50;
+header .navigations_item:hover {
+  color: #000000;
+}
+
+.router-link-active {
+  color: #000000;; /* Цвет текста активной ссылки */
+}
+
+.underline {
+  position: absolute;
+  width: 120px;
+  bottom: 4px;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  border-radius: 2.5px;;
+  background: #ddd; /* Серый цвет по умолчанию */
+  transition: background 0.3s;
+}
+
+.router-link-active .underline {
+  background: #AEADF0;; /* Синяя полоска для активной ссылки */
 }
 
 header p {
@@ -123,10 +201,7 @@ main {
 
 /* Стили для футера */
 footer {
-  background: #f4f4f4;
-  color: #666;
   padding: 20px 10px;
-  border-top: 1px solid #ddd;
   font-size: 14px;
   text-align: center;
 }

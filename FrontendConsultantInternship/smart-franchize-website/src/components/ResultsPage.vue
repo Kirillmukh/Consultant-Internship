@@ -72,6 +72,13 @@ export default {
   text-align: center;
 }
 
+ h1{
+  font-family: 'Tektur';
+  font-size: 40px;
+  font-weight: 400;
+  } 
+
+
 button {
   margin-top: 20px;
   padding: 10px 15px;
