@@ -93,6 +93,12 @@ export default {
     background-color: #f9f9f9;
 }
 
+h1{
+  font-family: 'Tektur';
+
+  font-weight: 400;
+}
+
 .form-group {
     margin-bottom: 15px;
 }

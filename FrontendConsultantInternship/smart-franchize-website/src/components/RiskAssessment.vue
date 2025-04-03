@@ -98,6 +98,7 @@ export default {
       this.currentQuestionIndex = index;
       this.saveProgress();
     },
+
     submitAnswers() {
       // Переход на страницу результатов
       this.$router.push({ name: "results" });
@@ -142,6 +143,12 @@ export default {
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f9f9f9;
+}
+
+ h1{
+  font-family: 'Tektur';
+
+  font-weight: 400;
 }
 
 .progress-bar {

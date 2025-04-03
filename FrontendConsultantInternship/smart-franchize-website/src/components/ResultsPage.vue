@@ -98,13 +98,13 @@ export default {
   text-align: center;
 }
 
-.rating {
-  margin-bottom: 20px;
-}
 
-ul {
-  text-align: left;
-}
+ h1{
+  font-family: 'Tektur';
+  font-size: 40px;
+  font-weight: 400;
+  } 
+
 
 button {
   margin-top: 20px;
