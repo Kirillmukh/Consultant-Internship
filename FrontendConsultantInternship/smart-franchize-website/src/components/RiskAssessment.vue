@@ -163,6 +163,12 @@
     border-radius: 8px;
     background-color: #f9f9f9;
   }
+
+  h1{
+  font-family: 'Tektur';
+
+  font-weight: 400;
+}
   
   .progress-bar {
     display: flex;
