@@ -1,4 +1,3 @@
-<!-- filepath: c:\Users\dnsco\code\consultant_internship\Consultant-Internship\FrontendConsultantInternship\smart-franchize-website\src\components\HomePage.vue -->
 <template>
   <div class="home-page">
     <h1>Здесь будет приветствие</h1>
@@ -7,7 +6,7 @@
     </p>
     <div class="buttons">
       <button @click="navigateTo('about-franchising')">О франчайзинге</button>
-      <button @click="navigateTo('risk-assessment')">Оценить риски</button>
+      <button @click="checkProgress()">Оценить риски</button>
       <button @click="navigateTo('check-franchisor')">Проверить франчайзера</button>
     </div>
   </div>
@@ -19,6 +18,16 @@ export default {
   methods: {
     navigateTo(page) {
       this.$router.push({ name: page });
+    },
+    checkProgress() {
+      const progress = localStorage.getItem('riskAssessmentAnswers');
+      if (progress) {
+        // Если есть прогресс, перенаправляем на анкету
+        this.$router.push({ name: 'risk-assessment' });
+      } else {
+        // Если прогресса нет, перенаправляем на критические риски
+        this.$router.push({ name: 'critical-risks' });
+      }
     },
   },
 };
