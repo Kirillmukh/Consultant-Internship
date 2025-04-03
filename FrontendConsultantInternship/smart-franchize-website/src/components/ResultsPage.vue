@@ -4,11 +4,21 @@
     <div v-if="loading">Загрузка результатов...</div>
     <div v-else-if="error">{{ error }}</div>
     <div v-else>
+      <div class="rating">
+        <h2>Общий уровень риска: {{ riskLevel }}</h2>
+      </div>
       <ul>
-        <li v-for="(result, index) in results" :key="index">{{ result }}</li>
+        <li v-for="(item, index) in results" :key="index">
+          <p>
+            <strong>Вопрос:</strong> {{ item.question }}<br />
+            <strong>Ваш ответ:</strong> {{ item.answer }}
+          </p>
+          <p><strong>Объяснение:</strong> <span v-html="item.text"></span></p>
+        </li>
       </ul>
     </div>
     <button @click="goBack">Вернуться к вопросам</button>
+    <button @click="goToNextPage">Перейти к недоговорным рискам</button>
   </div>
 </template>
 
@@ -18,9 +28,19 @@ export default {
   data() {
     return {
       results: [], // Результаты с сервера
+      rating: null, // Общий рейтинг
+      userAnswers: {}, // Ответы пользователя
       loading: true, // Состояние загрузки
       error: null, // Ошибка, если запрос не удался
     };
+  },
+  computed: {
+    riskLevel() {
+      if (this.rating === 0) return "низкий";
+      if (this.rating === 1) return "средний";
+      if (this.rating === 2) return "высокий";
+      return "Неизвестно";
+    },
   },
   methods: {
     async fetchResults() {
@@ -31,6 +51,8 @@ export default {
         if (!answers) {
           throw new Error("Ответы пользователя не найдены.");
         }
+
+        this.userAnswers = answers;
 
         // Отправка данных на сервер
         const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/submit-answers`, {
@@ -48,6 +70,7 @@ export default {
         // Получение результатов
         const data = await response.json();
         this.results = data.data;
+        this.rating = data.rating;
       } catch (error) {
         this.error = error.message;
       } finally {
@@ -56,6 +79,9 @@ export default {
     },
     goBack() {
       this.$router.push({ name: "risk-assessment" });
+    },
+    goToNextPage() {
+      this.$router.push({ name: "non-contractual-risks" });
     },
   },
   mounted() {
@@ -71,6 +97,7 @@ export default {
   padding: 20px;
   text-align: center;
 }
+
 
  h1{
   font-family: 'Tektur';

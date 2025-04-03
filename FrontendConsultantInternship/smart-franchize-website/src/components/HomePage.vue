@@ -1,4 +1,3 @@
-<!-- filepath: c:\Users\dnsco\code\consultant_internship\Consultant-Internship\FrontendConsultantInternship\smart-franchize-website\src\components\HomePage.vue -->
 <template>
   <div class="home-page">
     <h1>О нас</h1>
@@ -20,6 +19,16 @@ export default {
   methods: {
     navigateTo(page) {
       this.$router.push({ name: page });
+    },
+    checkProgress() {
+      const progress = localStorage.getItem('riskAssessmentAnswers');
+      if (progress) {
+        // Если есть прогресс, перенаправляем на анкету
+        this.$router.push({ name: 'risk-assessment' });
+      } else {
+        // Если прогресса нет, перенаправляем на критические риски
+        this.$router.push({ name: 'critical-risks' });
+      }
     },
   },
 };

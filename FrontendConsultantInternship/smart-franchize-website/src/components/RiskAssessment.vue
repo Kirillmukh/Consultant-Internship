@@ -122,10 +122,11 @@ export default {
     },
     resetProgress() {
       // Сброс прогресса
-      this.answers = {};
-      this.currentQuestionIndex = 0;
+      // this.answers = {};
+      // this.currentQuestionIndex = 0;
       localStorage.removeItem("riskAssessmentAnswers");
       localStorage.removeItem("riskAssessmentCurrentQuestion");
+      this.$router.push({ name: "home" });
     },
   },
   mounted() {
