@@ -5,11 +5,10 @@
         <router-link to="/" class="home-link">Смарт Франчайз</router-link>
       </div>
       <div class="navigations">
- 
         <router-link to="/" class="navigations_item">О нас<div class="underline"></div></router-link>
         <router-link to='/about-franchising' class="navigations_item">Q/A<br> о франчайзинге<div class="underline"></div></router-link>
         <router-link to="/check-franchisor" class="navigations_item">Проверить франчайзера<div class="underline"></div></router-link>
-        <router-link to="/risk-assessment" class="navigations_item">Оценить риски<div class="underline"></div></router-link>
+        <div class="navigations_item" @click="navigateToRiskAssessment">Оценить риски<div class="underline"></div></div>
       </div>
     </header>
     <main>
@@ -27,12 +26,6 @@ export default {
   data() {
     return {
       heartbeatInterval: null, // Таймер для heartbeat
-      links: [
-        { path: '/', title: 'О нас' },
-        { path: '/about-franchising', title: 'О франчайзинге' },
-        { path: '/risk-assessment', title: 'Оценить риски' },
-        { path: '/check-franchisor', title: 'Проверить франчайзера' }
-      ]
     };
   },
   methods: {
@@ -62,6 +55,17 @@ export default {
           console.error('Ошибка heartbeat:', error);
         });
     },
+    navigateToRiskAssessment() {
+      // Проверяем наличие прогресса в localStorage
+      const progress = localStorage.getItem('riskAssessmentAnswers');
+      if (progress) {
+        // Если прогресс есть, переходим на страницу анкеты
+        this.$router.push({ name: 'risk-assessment' });
+      } else {
+        // Если прогресса нет, переходим на страницу критических рисков
+        this.$router.push({ name: 'critical-risks' });
+      }
+    },
   },
   mounted() {
     // Запускаем heartbeat при загрузке приложения
@@ -79,7 +83,7 @@ export default {
 <style>
 /* Общие стили */
 #app {
-  font-family: 'Roboto', Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -110,7 +114,7 @@ header {
   margin: 0px;
   top: 30px;
   left: 0px;
-  background: #AEADF0; /* Цвет фона */
+  background: #91582F; /* Цвет фона */
   border: 1px solid #000000;
   
   font-size: clamp(12px, 0.5vw, 18px);
@@ -147,7 +151,7 @@ header .navigations{
 
 header .navigations_item{
   height: 80px;
-  width: 150px;
+  width: 170px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -160,6 +164,7 @@ header .navigations_item{
   font-size: 18px;
 
   transition: color 0.3s ease;
+  cursor: pointer; /* Добавлено для изменения курсора */
 }
 
 header .navigations_item:hover {
@@ -178,12 +183,12 @@ header .navigations_item:hover {
   width: 100%;
   height: 5px;
   border-radius: 2.5px;;
-  background: #ddd; /* Серый цвет по умолчанию */
+  background: #D9C4AB; /* Серый цвет по умолчанию */
   transition: background 0.3s;
 }
 
 .router-link-active .underline {
-  background: #AEADF0;; /* Синяя полоска для активной ссылки */
+  background: #91582F;
 }
 
 header p {

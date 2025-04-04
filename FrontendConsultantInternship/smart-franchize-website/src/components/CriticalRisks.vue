@@ -1,13 +1,17 @@
 <template>
   <div class="critical-risks">
-    <h1>Критические риски</h1>
+    <h1>Страница про критические риски</h1>
+    <p>
+      Здесь будет информация о критических рисках, связанных с франчайзингом
+    </p>
     <ul>
-      <li>Риск 1: Невозможность самостоятельного ценообразования</li>
-      <li>Риск 2: Отсутствие досудебного урегулирования споров</li>
-      <li>Риск 3: Потеря бизнеса после истечения срока договора</li>
-      <li>Риск 4: Регистрация договора за счет франчайзи</li>
-      <li>Риск 5: Отсутствие консультаций и поддержки</li>
+      <li>Такой-то риск</li>
+      <li>Ещё один риск</li>
+      <li>Третий риск</li>
     </ul>
+    <p>
+      Ещё какой-то сопровождающий текст
+    </p>
     <button @click="goToQuestionnaire">Перейти к анкете</button>
   </div>
 </template>
@@ -25,20 +29,18 @@ export default {
 
 <style scoped>
 .critical-risks {
-  max-width: 600px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #EEE2D4;
 }
 
 h1 {
   text-align: center;
   margin-bottom: 20px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
 }
 
 li {
