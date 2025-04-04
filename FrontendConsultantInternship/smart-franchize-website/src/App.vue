@@ -5,11 +5,10 @@
         <router-link to="/" class="home-link">Смарт Франчайз</router-link>
       </div>
       <div class="navigations">
- 
         <router-link to="/" class="navigations_item">О нас<div class="underline"></div></router-link>
         <router-link to='/about-franchising' class="navigations_item">Q/A<br> о франчайзинге<div class="underline"></div></router-link>
         <router-link to="/check-franchisor" class="navigations_item">Проверить франчайзера<div class="underline"></div></router-link>
-        <router-link to="/risk-assessment" class="navigations_item">Оценить риски<div class="underline"></div></router-link>
+        <div class="navigations_item" @click="navigateToRiskAssessment">Оценить риски<div class="underline"></div></div>
       </div>
     </header>
     <main>
@@ -27,12 +26,6 @@ export default {
   data() {
     return {
       heartbeatInterval: null, // Таймер для heartbeat
-      links: [
-        { path: '/', title: 'О нас' },
-        { path: '/about-franchising', title: 'О франчайзинге' },
-        { path: '/risk-assessment', title: 'Оценить риски' },
-        { path: '/check-franchisor', title: 'Проверить франчайзера' }
-      ]
     };
   },
   methods: {
@@ -61,6 +54,17 @@ export default {
         .catch((error) => {
           console.error('Ошибка heartbeat:', error);
         });
+    },
+    navigateToRiskAssessment() {
+      // Проверяем наличие прогресса в localStorage
+      const progress = localStorage.getItem('riskAssessmentAnswers');
+      if (progress) {
+        // Если прогресс есть, переходим на страницу анкеты
+        this.$router.push({ name: 'risk-assessment' });
+      } else {
+        // Если прогресса нет, переходим на страницу критических рисков
+        this.$router.push({ name: 'critical-risks' });
+      }
     },
   },
   mounted() {
@@ -160,6 +164,7 @@ header .navigations_item{
   font-size: 18px;
 
   transition: color 0.3s ease;
+  cursor: pointer; /* Добавлено для изменения курсора */
 }
 
 header .navigations_item:hover {
@@ -202,17 +207,7 @@ main {
 /* Стили для футера */
 footer {
   padding: 20px 10px;
-  font-size: 14px;
-  text-align: center;
-}
-
-footer p {
-  margin: 0;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  header h1 {
+ {
     font-size: 24px;
   }
 
