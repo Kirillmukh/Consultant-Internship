@@ -14,11 +14,12 @@
       </button>
       <ul v-if="showDetails">
         <li v-for="(item, index) in results" :key="index" class="result-item">
-          <p><strong>Вопрос:</strong> {{ item.question }}</p>
-          <p><strong>Ответ:</strong> {{ item.answer }}</p>
-          <p><strong>Уровень риска:</strong> {{ item.risk_level }}</p>
-          <p v-if="item.explanation"><strong>Справка:</strong> <span v-html="item.explanation"></span></p>
-          <p v-if="item.note"><strong>Обратите внимание!</strong> <span v-html="item.note"></span></p>
+          <p><strong>Вопрос {{ item.id }}:</strong> {{ item.question }}</p>
+          <p><strong>Ваш ответ:</strong> {{ item.answer }}</p>
+          <p><strong>УРОВЕНЬ РИСКА:</strong> {{ item.risk_level }}</p>
+          <p v-if="item.explanation"><strong>ПОЧЕМУ:</strong> <span v-html="item.explanation"></span></p>
+          <p v-if="item.legal_basis"><strong>ПРАВОВОЕ ОБОСНОВАНИЕ:</strong> <span v-html="item.legal_basis"></span></p>
+          <p v-if="item.note"><strong>ОБРАТИТЕ ВНИМАНИЕ!</strong> <span v-html="item.note"></span></p>
         </li>
       </ul>
     </div>

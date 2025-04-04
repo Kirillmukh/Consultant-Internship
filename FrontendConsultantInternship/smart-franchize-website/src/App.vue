@@ -204,6 +204,13 @@ main {
   margin: 0 auto;
 }
 
+
+hint {
+  color: #666666;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* Стили для футера */
 footer {
   padding: 20px 10px;
