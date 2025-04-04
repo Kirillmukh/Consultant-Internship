@@ -2,13 +2,6 @@
   <div class="risk-assessment">
     <h1>Вопрос {{ currentQuestionIndex + 1 }}</h1>
 
-    <!-- Прогресс-бар -->
-    <div class="progress-bar">
-      <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
-        :class="{ active: currentQuestionIndex === index, completed: answers[question.id] !== undefined }"
-        @click="goToQuestion(index)" :title="question.text"></div>
-    </div>
-
     <!-- Текущий вопрос -->
     <div v-if="currentQuestion">
       <p>
@@ -46,8 +39,15 @@
     <!-- Кнопка сброса -->
     <button class="reset-button" @click="resetProgress">Сбросить</button>
   </div>
+  
+   <!-- Прогресс-бар -->
+   <div class="progress-bar">
+      <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
+        :class="{ active: currentQuestionIndex === index, completed: answers[question.id] !== undefined }"
+        @click="goToQuestion(index)" :title="question.text"></div>
+    </div>
 </template>
-
+  
 <script>
 export default {
   name: "RiskAssessment",
@@ -134,66 +134,64 @@ export default {
   },
 };
 </script>
-
+  
 <style scoped>
 .risk-assessment {
-  max-width: 600px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
+  border-radius: 20px;
+  background-color: #EEE2D4;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
 }
 
- h1{
+h1{
   font-family: 'Tektur';
-
+  font-size: 40px;
   font-weight: 400;
 }
-
+  
 .progress-bar {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
-
+  
 .progress-item {
-  width: 20px;
-  height: 20px;
+  width: 60px;
+  height: 4px;
   margin: 0 5px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  background-color: white;
+  border-radius: 2px;
+  background-color: #D9C4AB;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
 }
-
+  
 .progress-item.active {
-  border-color: #007bff;
   background-color: #007bff;
 }
-
+  
 .progress-item.completed {
-  border-color: #28a745;
-  background-color: #28a745;
+  background-color: #91582F;
 }
-
+  
 .tooltip {
   cursor: pointer;
   color: #007bff;
   text-decoration: underline;
 }
-
+  
 .option {
   margin-bottom: 10px;
 }
-
+  
 .navigation-buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 }
-
+  
 button {
   padding: 10px 15px;
   background-color: #007bff;
@@ -202,21 +200,21 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
-
+  
 button:hover {
   background-color: #0056b3;
 }
-
+  
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
-
+  
 .reset-button {
   margin-top: 20px;
   background-color: #dc3545;
 }
-
+  
 .reset-button:hover {
   background-color: #c82333;
 }

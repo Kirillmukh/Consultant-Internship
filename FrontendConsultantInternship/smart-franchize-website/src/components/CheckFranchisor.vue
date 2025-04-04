@@ -4,8 +4,12 @@
         <form @submit.prevent="handleSubmit">
             <div class="form-group">
                 <label for="franchisorName">Название франшизы:</label>
-                <input type="text" id="franchisorName" v-model="franchisorName"
-                    placeholder="Введите название франшизы" />
+                <input
+                    type="text"
+                    id="franchisorName"
+                    v-model="franchisorName"
+                    placeholder="Введите название франшизы"
+                />
             </div>
             <button type="submit" :disabled="loading">Проверить</button>
         </form>
@@ -85,17 +89,17 @@ export default {
 
 <style scoped>
 .check-franchisor {
-    max-width: 400px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+    border-radius: 20px;
+    background-color: #EEE2D4;
 }
 
 h1{
   font-family: 'Tektur';
-
+  font-size: 40px;
   font-weight: 400;
 }
 
@@ -117,7 +121,7 @@ input {
 
 button {
     padding: 10px 15px;
-    background-color: #007bff;
+    background-color: #836645;
     color: white;
     border: none;
     border-radius: 4px;
@@ -130,7 +134,7 @@ button:disabled {
 }
 
 button:hover:enabled {
-    background-color: #0056b3;
+    background-color: #91582F;
 }
 
 .loading {

@@ -83,7 +83,7 @@ export default {
 <style>
 /* Общие стили */
 #app {
-  font-family: 'Roboto', Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -114,7 +114,7 @@ header {
   margin: 0px;
   top: 30px;
   left: 0px;
-  background: #AEADF0; /* Цвет фона */
+  background: #91582F; /* Цвет фона */
   border: 1px solid #000000;
   
   font-size: clamp(12px, 0.5vw, 18px);
@@ -151,7 +151,7 @@ header .navigations{
 
 header .navigations_item{
   height: 80px;
-  width: 150px;
+  width: 170px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -183,12 +183,12 @@ header .navigations_item:hover {
   width: 100%;
   height: 5px;
   border-radius: 2.5px;;
-  background: #ddd; /* Серый цвет по умолчанию */
+  background: #D9C4AB; /* Серый цвет по умолчанию */
   transition: background 0.3s;
 }
 
 .router-link-active .underline {
-  background: #AEADF0;; /* Синяя полоска для активной ссылки */
+  background: #91582F;
 }
 
 header p {

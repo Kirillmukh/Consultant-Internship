@@ -5,7 +5,6 @@
     <div v-else-if="error">{{ error }}</div>
     <div v-else>
       <div class="rating">
-        <h2>Результаты:</h2>
         <p><strong>Низкий риск:</strong> {{ lowCount }}</p>
         <p><strong>Средний риск:</strong> {{ moderateCount }}</p>
         <p><strong>Высокий риск:</strong> {{ highCount }}</p>
@@ -103,10 +102,18 @@ export default {
 
 <style scoped>
 .results-page {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
-  text-align: left;
+  border-radius: 8px;
+  background-color: #EEE2D4;
+  border: 1px solid #ccc;
+}
+
+h1{
+  font-family: 'Tektur';
+  font-size: 40px;
+  font-weight: 400;
 }
 
 .rating {
@@ -117,9 +124,7 @@ export default {
 .result-item {
   margin-bottom: 20px;
   padding: 15px;
-  border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f9f9f9;
 }
 
 h3 {
@@ -136,7 +141,7 @@ button {
   margin: 20px auto;
   display: block;
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #836645;
   color: white;
   border: none;
   border-radius: 4px;
@@ -144,6 +149,6 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #91582F;
 }
 </style>
