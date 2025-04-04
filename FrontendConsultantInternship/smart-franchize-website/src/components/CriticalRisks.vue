@@ -29,10 +29,13 @@ export default {
 
 <style scoped>
 .critical-risks {
-  max-width: 600px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #EEE2D4;
 }
 
 h1 {

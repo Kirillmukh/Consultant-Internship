@@ -49,7 +49,7 @@ h1{
 .about{
   margin: 40px;
   font-size:22px;
-  border: 6px solid #AEADF0;
+  border: 6px solid #91582F;
   border-radius: 20px; 
   padding: 50px 30px;
 }
