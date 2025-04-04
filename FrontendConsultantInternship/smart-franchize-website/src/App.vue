@@ -207,17 +207,7 @@ main {
 /* Стили для футера */
 footer {
   padding: 20px 10px;
-  font-size: 14px;
-  text-align: center;
-}
-
-footer p {
-  margin: 0;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  header h1 {
+ {
     font-size: 24px;
   }
 
