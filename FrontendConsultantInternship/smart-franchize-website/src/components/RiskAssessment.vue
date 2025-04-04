@@ -13,7 +13,7 @@
     <div v-if="currentQuestion">
       <p>
         {{ currentQuestion.text }}
-        <span v-if="currentQuestion.explanation" class="tooltip" :title="currentQuestion.explanation">
+        <span v-if="currentQuestion.hint" class="tooltip" :title="currentQuestion.hint">
           ❓
         </span>
       </p>
@@ -21,8 +21,8 @@
         <label>
           <input type="radio" :name="'question-' + currentQuestion.id" :value="option.id"
             v-model="answers[currentQuestion.id]" @change="saveProgress" />
-          {{ option.text }}
-          <span v-if="option.explanation" class="tooltip" :title="option.explanation">
+          <span v-html="option.text"></span>
+          <span v-if="option.hint" class="tooltip" :title="option.hint">
             ❓
           </span>
         </label>
