@@ -1,6 +1,13 @@
 services:
+  app:
+    depends_on:
+      - redis
+      - postgres
+    build: .
+
   redis:
     image: 'redis:latest'
+    container_name: consultant-redis
     ports:
       - 6379:6379
 

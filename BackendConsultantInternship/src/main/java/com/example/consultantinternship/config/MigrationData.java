@@ -2,7 +2,6 @@ package com.example.consultantinternship.config;
 
 import com.example.consultantinternship.entity.Answer;
 import com.example.consultantinternship.entity.Question;
-import com.example.consultantinternship.repository.AnswerRepository;
 import com.example.consultantinternship.repository.QuestionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
