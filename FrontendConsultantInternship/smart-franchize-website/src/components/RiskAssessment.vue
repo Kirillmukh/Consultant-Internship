@@ -31,7 +31,7 @@
     </div>
 
     <!-- Кнопка сброса -->
-    <button class="reset-button" @click="resetProgress">Сбросить</button>
+    <!--<button class="reset-button" @click="resetProgress">Сбросить</button>-->
 
     <!-- Кнопка отправки -->
     <div>
