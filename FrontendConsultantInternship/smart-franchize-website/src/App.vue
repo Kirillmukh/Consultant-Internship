@@ -2,13 +2,15 @@
   <div id="app">
     <header>
       <div class="logo">
-        <router-link to="/" class="home-link">Смарт Франчайз</router-link>
+        <router-link to="/" class="home-link">
+        <img src="@/assets/SF.png" alt="Логотип" class=logo>
+      </router-link>
       </div>
       <div class="navigations">
         <router-link to="/" class="navigations_item">О нас<div class="underline"></div></router-link>
         <router-link to='/about-franchising' class="navigations_item">Q/A<br> о франчайзинге<div class="underline"></div></router-link>
         <router-link to="/check-franchisor" class="navigations_item">Проверить франчайзера<div class="underline"></div></router-link>
-        <div class="navigations_item" @click="navigateToRiskAssessment">Оценить риски<div class="underline"></div></div>
+        <div class="navigations_item" @click="navigateToRiskAssessment" :class="{ 'active': isActive }">Оценить риски<div class="underline"></div></div>
       </div>
     </header>
     <main>
@@ -27,6 +29,18 @@ export default {
     return {
       heartbeatInterval: null, // Таймер для heartbeat
     };
+  },
+  computed: {
+    isActive() {
+      // Проверяем текущий путь относительно нужных страниц
+      const activePages = [
+        '/risk-assessment',
+        '/non-contractual-risks', // добавьте другие нужные пути
+        '/critical-risks',
+        '/results'
+      ]
+      return activePages.includes(this.$route.path)
+    }
   },
   methods: {
     sendHeartbeat() {
@@ -108,37 +122,19 @@ header {
 .logo {
   
   position: relative;
-
-  width: 70px; /* Ширина блока */
-  height: 70px; /* Высота блока */
+  cursor: pointer;
+  max-width: 450px; /* Ширина блока */
+  height: 87px; /* Высота блока */
   margin: 0px;
-  top: 30px;
-  left: 0px;
-  background: #91582F; /* Цвет фона */
-  border: 1px solid #000000;
-  
-  font-size: clamp(12px, 0.5vw, 18px);
-  
+  top: 27px;
+  left: -25px;
 }
 
 header .home-link {
   position: absolute;        /* Абсолютное позиционирование */
-  bottom: 5px;           /* Отступ от нижнего края */
-  left: 5px;
-  right: 1px;
-  color: #000000;
-  text-decoration: none;
-  text-align: left; 
-  line-height: 1;
-  transition: color 0.3s ease;
-
+  right: 0px;
   z-index: 1;        /* Поднимаем над фоном */
-  
   max-width: 100%;
-}
-
-header .home-link:hover {
-  color: #ffffff;
 }
 
 header .navigations{
@@ -147,6 +143,7 @@ header .navigations{
   justify-content: flex-end;
   align-items: right;
   bottom: 50px;
+  right: -20px;
 }
 
 header .navigations_item{
@@ -189,6 +186,10 @@ header .navigations_item:hover {
 
 .router-link-active .underline {
   background: #91582F;
+}
+
+.navigations_item.active .underline {
+  background: #91582F; /* Цвет подчеркивания для активной страницы */
 }
 
 header p {

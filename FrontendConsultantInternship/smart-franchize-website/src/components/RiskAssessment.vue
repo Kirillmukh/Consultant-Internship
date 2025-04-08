@@ -4,7 +4,7 @@
 
     <!-- Текущий вопрос -->
     <div v-if="currentQuestion">
-      <p>
+      <p class="question_body">
         {{ currentQuestion.text }}
         <span v-if="currentQuestion.hint" class="tooltip" :title="currentQuestion.hint">
           ❓
@@ -30,14 +30,16 @@
       </button>
     </div>
 
+    <!-- Кнопка сброса -->
+    <button class="reset-button" @click="resetProgress">Сбросить</button>
+
     <!-- Кнопка отправки -->
+    <div>
     <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
       :disabled="Object.keys(answers).length !== questions.length">
       Отправить ответы
     </button>
-
-    <!-- Кнопка сброса -->
-    <button class="reset-button" @click="resetProgress">Сбросить</button>
+    </div>
   </div>
   
    <!-- Прогресс-бар -->
@@ -151,6 +153,11 @@ h1{
   font-weight: 400;
 }
   
+.question_body{
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .progress-bar {
   display: flex;
   justify-content: center;
@@ -169,40 +176,44 @@ h1{
 }
   
 .progress-item.active {
-  background-color: #007bff;
+  background-color: #91582F;
 }
   
 .progress-item.completed {
-  background-color: #91582F;
+  background-color: #836645;
 }
   
 .tooltip {
   cursor: pointer;
   color: #007bff;
-  text-decoration: underline;
 }
   
 .option {
   margin-bottom: 10px;
+  color: black;
 }
   
 .navigation-buttons {
-  display: flex;
+  display: block;
   justify-content: space-between;
   margin-top: 20px;
 }
   
 button {
-  padding: 10px 15px;
-  background-color: #007bff;
+  margin: 20px;
+  height: 35px;
+  width: 200px;
+  background-color: #836645;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
+  font-family: 'Tektur';
+  font-size: 18px;
   cursor: pointer;
 }
   
 button:hover {
-  background-color: #0056b3;
+  background-color: #91582F;
 }
   
 button:disabled {
