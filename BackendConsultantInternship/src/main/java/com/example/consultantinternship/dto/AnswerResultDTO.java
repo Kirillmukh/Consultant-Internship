@@ -1,4 +1,4 @@
-package com.example.consultantinternship.entity;
+package com.example.consultantinternship.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Option {
+public class AnswerResultDTO  {
     private String id;
     private String text;
+    private String risk;
     private String explanation;
+    private String note;
 }

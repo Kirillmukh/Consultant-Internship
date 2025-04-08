@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class OptionDTO {
+public class QuestionResultDTO {
     private String id;
+    private String title; // todo maybe remove title unnecessary?
     private String text;
-    private String explanation;
 }

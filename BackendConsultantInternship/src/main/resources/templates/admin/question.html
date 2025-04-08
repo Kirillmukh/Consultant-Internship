@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Question Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .answer-block {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            background-color: #f8f9fa;
+        }
+        .sub-answer-block {
+            margin-left: 30px;
+            background-color: #e9ecef;
+        }
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+        .sub-answers-container {
+            margin-top: 10px;
+            padding-left: 15px;
+            border-left: 2px solid #adb5bd;
+        }
+        .question-type-select {
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <h1 class="mb-4">Add New Question</h1>
+    <form th:action="@{/admin/question}" method="post">
+        <!-- Question fields -->
+        <div class="card mb-4">
+            <div class="card-header">Question Details</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="questionHint" class="form-label">Question Hint</label>
+                    <input type="text" class="form-control" id="questionHint" name="questionHint">
+                </div>
+                <div class="mb-3">
+                    <label for="questionText" class="form-label">Question Text</label>
+                    <textarea class="form-control" id="questionText" name="questionText" rows="3" required></textarea>
+                </div>
+<!--                <div class="mb-3">-->
+<!--                    <label for="type" class="form-label">Question Type</label>-->
+<!--                    <select class="form-select question-type-select" id="type" name="type" required>-->
+<!--                        <option value="">Select type</option>-->
+<!--                        <option value="SINGLE_CHOICE">Single Choice</option>-->
+<!--                        <option value="MULTIPLE_CHOICE">Multiple Choice</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+            </div>
+        </div>
+
+        <!-- Answers section -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Answers</span>
+                <button type="button" class="btn btn-sm btn-primary" id="add-answer-btn">Add Answer</button>
+            </div>
+            <div class="card-body">
+                <div id="answers-container">
+                    <!-- Answers will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success">Submit Question</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const answersContainer = document.getElementById('answers-container');
+        const addAnswerBtn = document.getElementById('add-answer-btn');
+        let answerCounter = 0;
+
+        addAnswerBtn.addEventListener('click', function() {
+            addAnswerBlock();
+        });
+
+        function addAnswerBlock(parentId = null, isSubAnswer = false) {
+            const answerId = `answer-${answerCounter++}`;
+            const answerBlock = document.createElement('div');
+            answerBlock.className = `answer-block ${isSubAnswer ? 'sub-answer-block' : ''}`;
+            answerBlock.id = answerId;
+
+            const namePrefix = parentId
+                ? `answers[${parentId.split('-')[1]}].subAnswers`
+                : 'answers';
+
+            const index = parentId
+                ? document.querySelector(`#${parentId} .sub-answers-container`).children.length
+                : answersContainer.children.length;
+
+            answerBlock.innerHTML = `
+                <button type="button" class="btn btn-danger btn-sm remove-btn">×</button>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="${answerId}-text" class="form-label">Answer Text</label>
+                        <input type="text" class="form-control" id="${answerId}-text"
+                               name="${namePrefix}[${index}].text" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="${answerId}-hint" class="form-label">Hint</label>
+                        <input type="text" class="form-control" id="${answerId}-hint"
+                               name="${namePrefix}[${index}].hint">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="${answerId}-risk" class="form-label">Risk Level</label>
+<!--                        <input type="text" class="form-control" id="${answerId}-risk" name="${namePrefix}[${index}].risk">-->
+                        <select class="form-select question-type-select" id="${answerId}-risk" name="${namePrefix}[${index}].risk">-->
+                            <option value="">Select type</option>
+                            <option value="Высокий">Высокий</option>
+                            <option value="Средний">Средний</option>
+                            <option value="Низкий">Низкий</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="${answerId}-explanation" class="form-label">Explanation</label>
+                        <input type="text" class="form-control" id="${answerId}-explanation"
+                               name="${namePrefix}[${index}].explanation">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="${answerId}-note" class="form-label">Note</label>
+                        <input type="text" class="form-control" id="${answerId}-note"
+                               name="${namePrefix}[${index}].note">
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-outline-primary btn-sm add-sub-answer-btn">
+                            Add Sub-Answer
+                        </button>
+                    </div>
+                </div>
+                <div class="sub-answers-container mt-2"></div>
+            `;
+
+            // Add to DOM
+            if (parentId) {
+                document.querySelector(`#${parentId} .sub-answers-container`).appendChild(answerBlock);
+            } else {
+                answersContainer.appendChild(answerBlock);
+            }
+
+            // Add event listeners
+            answerBlock.querySelector('.remove-btn').addEventListener('click', function() {
+                answerBlock.remove();
+            });
+
+            answerBlock.querySelector('.add-sub-answer-btn').addEventListener('click', function() {
+                addAnswerBlock(answerId, true);
+            });
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
