@@ -38,7 +38,7 @@
 
     <!-- Кнопка сброса -->
     <button class="reset-button" @click="resetProgress">Сбросить</button>
-  </div>
+
   
    <!-- Прогресс-бар -->
    <div class="progress-bar">
@@ -46,6 +46,7 @@
         :class="{ active: currentQuestionIndex === index, completed: answers[question.id] !== undefined }"
         @click="goToQuestion(index)" :title="question.text"></div>
     </div>
+  </div>
 </template>
   
 <script>
@@ -67,10 +68,11 @@ export default {
     async fetchQuestions() {
       try {
         // Запрос к API для получения списка вопросов
-        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/questions`);
+        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/v1/questions`);
         const data = await response.json();
 
         if (data.success) {
+          console.log("Вопросы:", data);
           // Успешно получили вопросы
           this.questions = data.data;
         } else {

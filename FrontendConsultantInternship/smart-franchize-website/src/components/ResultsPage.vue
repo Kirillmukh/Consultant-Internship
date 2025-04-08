@@ -54,7 +54,7 @@ export default {
         }
 
         // Отправка данных на сервер
-        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/submit-answers`, {
+        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/v1/submit-answers`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

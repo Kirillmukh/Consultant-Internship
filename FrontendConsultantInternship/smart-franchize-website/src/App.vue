@@ -214,16 +214,7 @@ hint {
 /* Стили для футера */
 footer {
   padding: 20px 10px;
- {
-    font-size: 24px;
-  }
-
-  header p {
-    font-size: 14px;
-  }
-
-  main {
-    padding: 10px;
-  }
+  text-align: center; /* Выровнять текст по центру */
+  color: #333;  
 }
 </style>
