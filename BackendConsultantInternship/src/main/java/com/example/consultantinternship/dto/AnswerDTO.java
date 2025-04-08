@@ -12,11 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class QuestionDTO {
+public class AnswerDTO {
     private String id;
-    private String title;
+    private String text;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String hint;
-    private String text;
-    private List<AnswerDTO> answers;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AnswerDTO> subAnswers;
 }

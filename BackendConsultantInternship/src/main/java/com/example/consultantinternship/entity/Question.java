@@ -1,21 +1,31 @@
 package com.example.consultantinternship.entity;
 
-import com.example.consultantinternship.entity.util.QuestionType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @AllArgsConstructor
-public class Question {
-    private Integer id;
-    private String text;
-    private QuestionType type;
-    private String explanation;
-    private List<Option> options;
+@Entity
+@Table(name = "questions")
+public class Question implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+    @Column(name = "title")
+    private String title; // ЦЕНОВАЯ ПОЛИТИКА
+    @Column(name = "hint")
+    private String questionHint;
+    @Column(name = "text")
+    private String questionText; // указано ли ... ?
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Answer> answers = new ArrayList<>();
 }
