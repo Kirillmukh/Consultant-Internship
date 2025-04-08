@@ -54,7 +54,7 @@ export default {
         }
 
         // Отправка данных на сервер
-        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/submit-answers`, {
+        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/v1/submit-answers`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export default {
   border: 1px solid #ccc;
 }
 
-h1{
+h1 {
   font-family: 'Tektur';
   font-size: 40px;
   font-weight: 400;

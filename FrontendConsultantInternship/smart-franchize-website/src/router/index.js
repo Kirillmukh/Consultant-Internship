@@ -6,6 +6,7 @@ import CheckFranchisor from '../components/CheckFranchisor.vue';
 import ResultsPage from "../components/ResultsPage.vue";
 import NonContractualRisks from '@/components/NonContractualRisks.vue';
 import CriticalRisks from '@/components/CriticalRisks.vue';
+import MemoPage from '@/components/MemoPage.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomePage },
@@ -15,6 +16,12 @@ const routes = [
   { path: '/results', name: 'results', component: ResultsPage, props: true },
   { path: '/non-contractual-risks', name: 'non-contractual-risks', component: NonContractualRisks },
   { path: '/critical-risks', name: 'critical-risks', component: CriticalRisks },
+  {
+    path: '/memo/:file',
+    name: 'memo',
+    component: MemoPage,
+    props: (route) => ({ memoFile: route.params.file })
+  },
 ];
 
 const router = createRouter({

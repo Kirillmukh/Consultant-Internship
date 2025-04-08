@@ -4,12 +4,8 @@
         <form @submit.prevent="handleSubmit">
             <div class="form-group">
                 <label for="franchisorName">Название франшизы:</label>
-                <input
-                    type="text"
-                    id="franchisorName"
-                    v-model="franchisorName"
-                    placeholder="Введите название франшизы"
-                />
+                <input type="text" id="franchisorName" v-model="franchisorName"
+                    placeholder="Введите название франшизы" />
             </div>
             <button type="submit" :disabled="loading">Проверить</button>
         </form>
@@ -97,10 +93,10 @@ export default {
     background-color: #EEE2D4;
 }
 
-h1{
-  font-family: 'Tektur';
-  font-size: 40px;
-  font-weight: 400;
+h1 {
+    font-family: 'Tektur';
+    font-size: 40px;
+    font-weight: 400;
 }
 
 .form-group {
