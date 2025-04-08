@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+    <changeSet id="create tables" author="kirillmukh">
+        <sql>
+            CREATE TABLE questions
+            (
+                id    VARCHAR UNIQUE PRIMARY KEY,
+                title VARCHAR,
+                hint  VARCHAR,
+                text  VARCHAR
+            );
+            CREATE TABLE answers
+            (
+                id               VARCHAR UNIQUE PRIMARY KEY,
+                text             VARCHAR,
+                hint             VARCHAR,
+                risk             VARCHAR,
+                explanation      TEXT,
+                note             TEXT,
+                question_id      VARCHAR REFERENCES questions (id),
+                parent_answer_id VARCHAR REFERENCES answers (id),
+
+                CONSTRAINT fk_question
+                    FOREIGN KEY (question_id)
+                        REFERENCES questions (id)
+                        ON DELETE CASCADE,
+
+                CONSTRAINT fk_parent_answer
+                    FOREIGN KEY (parent_answer_id)
+                        REFERENCES answers (id)
+                        ON DELETE CASCADE
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>
