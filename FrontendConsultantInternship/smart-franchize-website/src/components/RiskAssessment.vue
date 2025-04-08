@@ -48,8 +48,9 @@
         :class="{ active: currentQuestionIndex === index, completed: answers[question.id] !== undefined }"
         @click="goToQuestion(index)" :title="question.text"></div>
     </div>
+  </div>
 </template>
-  
+
 <script>
 export default {
   name: "RiskAssessment",
@@ -69,10 +70,11 @@ export default {
     async fetchQuestions() {
       try {
         // Запрос к API для получения списка вопросов
-        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/questions`);
+        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/v1/questions`);
         const data = await response.json();
 
         if (data.success) {
+          console.log("Вопросы:", data);
           // Успешно получили вопросы
           this.questions = data.data;
         } else {
@@ -136,7 +138,7 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 .risk-assessment {
   max-width: 1000px;
@@ -147,12 +149,12 @@ export default {
   border: 1px solid #ccc;
 }
 
-h1{
+h1 {
   font-family: 'Tektur';
   font-size: 40px;
   font-weight: 400;
 }
-  
+
 .question_body{
   font-size: 20px;
   font-weight: bold;
@@ -164,7 +166,7 @@ h1{
   margin-bottom: 20px;
   margin-top: 20px;
 }
-  
+
 .progress-item {
   width: 60px;
   height: 4px;
@@ -174,31 +176,31 @@ h1{
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
 }
-  
+
 .progress-item.active {
   background-color: #91582F;
 }
-  
+
 .progress-item.completed {
   background-color: #836645;
 }
-  
+
 .tooltip {
   cursor: pointer;
   color: #007bff;
 }
-  
+
 .option {
   margin-bottom: 10px;
   color: black;
 }
-  
+
 .navigation-buttons {
   display: block;
   justify-content: space-between;
   margin-top: 20px;
 }
-  
+
 button {
   margin: 20px;
   height: 35px;
@@ -211,21 +213,21 @@ button {
   font-size: 18px;
   cursor: pointer;
 }
-  
+
 button:hover {
   background-color: #91582F;
 }
-  
+
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
-  
+
 .reset-button {
   margin-top: 20px;
   background-color: #dc3545;
 }
-  
+
 .reset-button:hover {
   background-color: #c82333;
 }

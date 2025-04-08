@@ -120,7 +120,7 @@ header {
 }
 
 .logo {
-  
+
   position: relative;
   cursor: pointer;
   max-width: 450px; /* Ширина блока */
@@ -146,7 +146,7 @@ header .navigations{
   right: -20px;
 }
 
-header .navigations_item{
+header .navigations_item {
   height: 80px;
   width: 170px;
   display: flex;
@@ -154,14 +154,15 @@ header .navigations_item{
   justify-content: center;
   text-align: center;
 
-  position: relative; 
+  position: relative;
   margin: 10px;
   color: #626262;
   text-decoration: none;
   font-size: 18px;
 
   transition: color 0.3s ease;
-  cursor: pointer; /* Добавлено для изменения курсора */
+  cursor: pointer;
+  /* Добавлено для изменения курсора */
 }
 
 header .navigations_item:hover {
@@ -169,7 +170,9 @@ header .navigations_item:hover {
 }
 
 .router-link-active {
-  color: #000000;; /* Цвет текста активной ссылки */
+  color: #000000;
+  ;
+  /* Цвет текста активной ссылки */
 }
 
 .underline {
@@ -179,8 +182,10 @@ header .navigations_item:hover {
   left: 0;
   width: 100%;
   height: 5px;
-  border-radius: 2.5px;;
-  background: #D9C4AB; /* Серый цвет по умолчанию */
+  border-radius: 2.5px;
+  ;
+  background: #D9C4AB;
+  /* Серый цвет по умолчанию */
   transition: background 0.3s;
 }
 
@@ -215,16 +220,8 @@ hint {
 /* Стили для футера */
 footer {
   padding: 20px 10px;
- {
-    font-size: 24px;
-  }
-
-  header p {
-    font-size: 14px;
-  }
-
-  main {
-    padding: 10px;
-  }
+  text-align: center;
+  /* Выровнять текст по центру */
+  color: #333;
 }
 </style>

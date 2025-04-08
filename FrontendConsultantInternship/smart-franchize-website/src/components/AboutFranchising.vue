@@ -2,82 +2,65 @@
 <template>
   <div>
     <h1>Q/A<br>о франчайзинге</h1>
-  </div>
-  <div class = "container">
-    <h2>Общие вопросы о франчайзинге кофеен</h2>
-    <div class="dropdown">
-      <div v-for="(item, index) in items" :key="item.id" class="dropdown">
-      <button class="dropdown-button" @click="toggleDropdown(index)">
-        <span class="icon" :class="{ 'rotated': item.isOpen }">></span>
-        {{ item.title }}
-      </button>
-        <transition name="slide">
-          <div v-show="item.isOpen" class="dropdown-content">
-          {{ item.content }}
+    <div class="container">
+      <div v-for="(section, sectionIndex) in sections" :key="sectionIndex" class="section">
+        <h2>{{ section.title }}</h2>
+        <div class="dropdown">
+          <div v-for="(item, index) in section.items" :key="item.id" class="dropdown">
+            <button class="dropdown-button" @click="toggleDropdown(sectionIndex, index)">
+              <span class="icon" :class="{ 'rotated': item.isOpen }">></span>
+              {{ item.title }}
+            </button>
+            <transition name="slide">
+              <div v-show="item.isOpen" class="dropdown-content">
+                <div v-html="item.content"></div>
+              </div>
+            </transition>
+          </div>
         </div>
-        </transition>
       </div>
     </div>
-    <h2>Следующий раздел вопросов</h2>
   </div>
 </template>
 
 <script>
+import { faqData } from "@/data/FAQ";
+
 export default {
-  name: 'AboutFranchising',
+  name: "AboutFranchising",
   data() {
     return {
-      items: [
-        {
-          id: 1,
-          title: "Как открыть франшизу кофейни?",
-          content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non eleifend orci. Vestibulum nisl odio, aliquam nec suscipit sed, imperdiet sed metus. Ut porta pretium lectus accumsan vulputate. Aliquam lectus risus, auctor eu aliquam eget, lacinia a velit. Quisque pulvinar placerat ex vel eleifend. Morbi sodales suscipit dapibus. Mauris tellus eros, ullamcorper venenatis imperdiet n",
-          isOpen: false
-        },
-        {
-          id: 2,
-          title: "Вопрос 2",
-          content: "Ответ на вопрос 2...",
-          isOpen: false
-        },
-        {
-          id: 3,
-          title: "Вопрос 3",
-          content: "Ответ на вопрос 3...",
-          isOpen: false
-        }
-      ]
-    }
+      sections: faqData
+    };
   },
   methods: {
-    toggleDropdown(index) {
-      // Инвертируем состояние только выбранного элемента
-      this.items[index].isOpen = !this.items[index].isOpen
+    toggleDropdown(sectionIndex, itemIndex) {
+      this.sections[sectionIndex].items[itemIndex].isOpen = !this.sections[sectionIndex].items[itemIndex].isOpen;
     }
   }
 };
 </script>
 
 <style scoped>
-h1{
+h1 {
   font-family: 'Tektur';
   font-size: 40px;
   font-weight: 500;
 }
 
-.container{
+.container {
   max-width: 1200px;
   width: 100%;
   text-align: start;
 }
 
-h2{
+h2 {
   position: relative;
   font-family: 'Tektur';
   font-size: 30px;
   height: 60px;
   align-content: center;
-  
+
   background-color: #EEE2D4;
   font-weight: 500;
   padding-left: 25px;
@@ -121,9 +104,9 @@ h2{
   border-radius: 20px;
 }
 
-p{
-  font-size:22px;
-  border-radius: 20px; 
+p {
+  font-size: 22px;
+  border-radius: 20px;
   padding: 50px 30px;
 }
 
