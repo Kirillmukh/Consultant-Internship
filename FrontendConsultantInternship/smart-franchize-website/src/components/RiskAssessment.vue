@@ -43,12 +43,12 @@
   </div>
   
    <!-- Прогресс-бар -->
-   <div class="progress-bar">
-      <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
-        :class="{ active: currentQuestionIndex === index, completed: answers[question.id] !== undefined }"
-        @click="goToQuestion(index)" :title="question.text"></div>
-    </div>
+  <div class="progress-bar">
+    <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
+      :class="{ active: currentQuestionIndex === index, completed: answers[question.id] !== undefined }"
+      @click="goToQuestion(index)" :title="question.text"></div>
   </div>
+  
 </template>
 
 <script>
