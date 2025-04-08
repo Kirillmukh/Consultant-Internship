@@ -2,23 +2,23 @@
 <template>
   <div>
     <h1>Q/A<br>о франчайзинге</h1>
-  </div>
-  <div class = "container">
-    <h2>Общие вопросы о франчайзинге кофеен</h2>
-    <div class="dropdown">
-      <div v-for="(item, index) in items" :key="item.id" class="dropdown">
-      <button class="dropdown-button" @click="toggleDropdown(index)">
-        <span class="icon" :class="{ 'rotated': item.isOpen }">></span>
-        {{ item.title }}
-      </button>
-        <transition name="slide">
-          <div v-show="item.isOpen" class="dropdown-content">
-          {{ item.content }}
+    <div class="container">
+      <h2>Общие вопросы о франчайзинге кофеен</h2>
+      <div class="dropdown">
+        <div v-for="(item, index) in items" :key="item.id" class="dropdown">
+          <button class="dropdown-button" @click="toggleDropdown(index)">
+            <span class="icon" :class="{ 'rotated': item.isOpen }">></span>
+            {{ item.title }}
+          </button>
+          <transition name="slide">
+            <div v-show="item.isOpen" class="dropdown-content">
+              {{ item.content }}
+            </div>
+          </transition>
         </div>
-        </transition>
       </div>
+      <h2>Следующий раздел вопросов</h2>
     </div>
-    <h2>Следующий раздел вопросов</h2>
   </div>
 </template>
 
@@ -59,25 +59,25 @@ export default {
 </script>
 
 <style scoped>
-h1{
+h1 {
   font-family: 'Tektur';
   font-size: 40px;
   font-weight: 500;
 }
 
-.container{
+.container {
   max-width: 1200px;
   width: 100%;
   text-align: start;
 }
 
-h2{
+h2 {
   position: relative;
   font-family: 'Tektur';
   font-size: 30px;
   height: 60px;
   align-content: center;
-  
+
   background-color: #EEE2D4;
   font-weight: 500;
   padding-left: 25px;
@@ -121,9 +121,9 @@ h2{
   border-radius: 20px;
 }
 
-p{
-  font-size:22px;
-  border-radius: 20px; 
+p {
+  font-size: 22px;
+  border-radius: 20px;
   padding: 50px 30px;
 }
 

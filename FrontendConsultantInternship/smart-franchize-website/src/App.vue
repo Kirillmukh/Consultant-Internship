@@ -6,9 +6,12 @@
       </div>
       <div class="navigations">
         <router-link to="/" class="navigations_item">О нас<div class="underline"></div></router-link>
-        <router-link to='/about-franchising' class="navigations_item">Q/A<br> о франчайзинге<div class="underline"></div></router-link>
-        <router-link to="/check-franchisor" class="navigations_item">Проверить франчайзера<div class="underline"></div></router-link>
-        <div class="navigations_item" @click="navigateToRiskAssessment">Оценить риски<div class="underline"></div></div>
+        <router-link to='/about-franchising' class="navigations_item">Q/A<br> о франчайзинге<div class="underline">
+          </div></router-link>
+        <router-link to="/check-franchisor" class="navigations_item">Проверить франчайзера<div class="underline"></div>
+          </router-link>
+        <div class="navigations_item" @click="navigateToRiskAssessment">Оценить риски<div class="underline"></div>
+        </div>
       </div>
     </header>
     <main>
@@ -106,34 +109,40 @@ header {
 }
 
 .logo {
-  
+
   position: relative;
 
-  width: 70px; /* Ширина блока */
-  height: 70px; /* Высота блока */
+  width: 70px;
+  /* Ширина блока */
+  height: 70px;
+  /* Высота блока */
   margin: 0px;
   top: 30px;
   left: 0px;
-  background: #91582F; /* Цвет фона */
+  background: #91582F;
+  /* Цвет фона */
   border: 1px solid #000000;
-  
+
   font-size: clamp(12px, 0.5vw, 18px);
-  
+
 }
 
 header .home-link {
-  position: absolute;        /* Абсолютное позиционирование */
-  bottom: 5px;           /* Отступ от нижнего края */
+  position: absolute;
+  /* Абсолютное позиционирование */
+  bottom: 5px;
+  /* Отступ от нижнего края */
   left: 5px;
   right: 1px;
   color: #000000;
   text-decoration: none;
-  text-align: left; 
+  text-align: left;
   line-height: 1;
   transition: color 0.3s ease;
 
-  z-index: 1;        /* Поднимаем над фоном */
-  
+  z-index: 1;
+  /* Поднимаем над фоном */
+
   max-width: 100%;
 }
 
@@ -141,15 +150,15 @@ header .home-link:hover {
   color: #ffffff;
 }
 
-header .navigations{
-  position: relative; 
+header .navigations {
+  position: relative;
   display: flex;
   justify-content: flex-end;
   align-items: right;
   bottom: 50px;
 }
 
-header .navigations_item{
+header .navigations_item {
   height: 80px;
   width: 170px;
   display: flex;
@@ -157,14 +166,15 @@ header .navigations_item{
   justify-content: center;
   text-align: center;
 
-  position: relative; 
+  position: relative;
   margin: 10px;
   color: #626262;
   text-decoration: none;
   font-size: 18px;
 
   transition: color 0.3s ease;
-  cursor: pointer; /* Добавлено для изменения курсора */
+  cursor: pointer;
+  /* Добавлено для изменения курсора */
 }
 
 header .navigations_item:hover {
@@ -172,7 +182,9 @@ header .navigations_item:hover {
 }
 
 .router-link-active {
-  color: #000000;; /* Цвет текста активной ссылки */
+  color: #000000;
+  ;
+  /* Цвет текста активной ссылки */
 }
 
 .underline {
@@ -182,8 +194,10 @@ header .navigations_item:hover {
   left: 0;
   width: 100%;
   height: 5px;
-  border-radius: 2.5px;;
-  background: #D9C4AB; /* Серый цвет по умолчанию */
+  border-radius: 2.5px;
+  ;
+  background: #D9C4AB;
+  /* Серый цвет по умолчанию */
   transition: background 0.3s;
 }
 
@@ -214,7 +228,8 @@ hint {
 /* Стили для футера */
 footer {
   padding: 20px 10px;
-  text-align: center; /* Выровнять текст по центру */
-  color: #333;  
+  text-align: center;
+  /* Выровнять текст по центру */
+  color: #333;
 }
 </style>

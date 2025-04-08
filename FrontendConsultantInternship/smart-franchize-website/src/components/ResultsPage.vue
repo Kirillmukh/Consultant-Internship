@@ -111,7 +111,7 @@ export default {
   border: 1px solid #ccc;
 }
 
-h1{
+h1 {
   font-family: 'Tektur';
   font-size: 40px;
   font-weight: 400;
