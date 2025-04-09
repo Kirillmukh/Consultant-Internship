@@ -139,13 +139,15 @@ p {
 }
 
 button {
-  margin: 20px auto;
-  display: block;
-  padding: 10px 15px;
+  margin: 20px;
+  height: 35px;
+  width: 400px;
   background-color: #836645;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
+  font-family: 'Tektur';
+  font-size: 18px;
   cursor: pointer;
 }
 

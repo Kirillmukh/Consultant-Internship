@@ -91,6 +91,7 @@ export default {
     border: 1px solid #ccc;
     border-radius: 20px;
     background-color: #EEE2D4;
+    font-family: 'Tektur';
 }
 
 h1 {
@@ -111,17 +112,25 @@ label {
 
 input {
     width: 100%;
+    height: 40px;
     padding: 8px;
+    background-color: #EEE2D4;
     box-sizing: border-box;
+    border: 0.5px solid black ;
+    border-radius: 10px;
 }
 
 button {
+    width: 200px;
     padding: 10px 15px;
     background-color: #836645;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
+    font-family: 'Tektur';
+    font-weight: bold;
+    font-size: 18px;
 }
 
 button:disabled {
@@ -143,9 +152,8 @@ button:hover:enabled {
 .details {
     margin-top: 20px;
     padding: 10px;
-    border: 1px solid #ddd;
     border-radius: 4px;
-    background-color: #fff;
+    background-color: #EEE2D4;
 }
 
 .error {
