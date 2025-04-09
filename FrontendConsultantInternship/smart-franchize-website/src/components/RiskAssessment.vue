@@ -7,7 +7,7 @@
       <p class="question_body">
         {{ currentQuestion.text }}
         <span v-if="currentQuestion.hint" class="tooltip" :title="currentQuestion.hint">
-          ❓
+          ?
         </span>
       </p>
       <div v-for="option in currentQuestion.answers" :key="option.id" class="option">
@@ -16,7 +16,7 @@
             v-model="answers[currentQuestion.id]" @change="saveProgress" />
           <span v-html="option.text"></span>
           <span v-if="option.hint" class="tooltip" :title="option.hint">
-            ❓
+            ?
           </span>
         </label>
       </div>
@@ -31,7 +31,7 @@
     </div>
 
     <!-- Кнопка сброса -->
-    <!--<button class="reset-button" @click="resetProgress">Сбросить</button>-->
+    <!-- <button class="reset-button" @click="resetProgress">Сбросить</button> -->
 
     <!-- Кнопка отправки -->
     <div>
@@ -187,7 +187,24 @@ h1 {
 
 .tooltip {
   cursor: pointer;
-  color: #007bff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #836645;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.8em;
+  
+  vertical-align: super;
+  margin-left: 4px;
+  position: relative;
+  top: -0.4em;
+}
+
+.tooltip:hover{
+  background-color: #91582F;
 }
 
 .option {

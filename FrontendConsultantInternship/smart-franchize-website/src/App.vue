@@ -1,23 +1,23 @@
 <template>
   <div id="app">
     <header>
-      <div class="logo">
+      <div class="logo_div">
         <router-link to="/" class="home-link">
-        <img src="@/assets/SF.png" alt="Логотип" class=logo>
-      </router-link>
+          <img src="@/assets/SF.png" alt="Логотип" class=logo>
+        </router-link>
       </div>
       <div class="navigations">
-        <router-link to="/" class="navigations_item">О нас<div class="underline"></div></router-link>
-        <router-link to='/about-franchising' class="navigations_item">Q/A<br> о франчайзинге<div class="underline"></div></router-link>
-        <router-link to="/check-franchisor" class="navigations_item">Проверить франчайзера<div class="underline"></div></router-link>
+        <!-- <router-link to="/" class="navigations_item">Главная<div class="underline"></div></router-link> -->
         <div class="navigations_item" @click="navigateToRiskAssessment" :class="{ 'active': isActive }">Оценить риски<div class="underline"></div></div>
+        <router-link to='/about-franchising' class="navigations_item">Q/A<br> о франчайзинге<div class="underline"></div></router-link>
+        <router-link to="/non-contractual-risks" class="navigations_item">Памятки для франчайзи<div class="underline"></div></router-link>
       </div>
     </header>
     <main>
       <router-view />
     </main>
     <footer>
-      <p>&copy; 2025 СмартФранчайз. Сделано командой 4</p>
+      <p>&copy; 2025 СмартФранчайз</p>
     </footer>
   </div>
 </template>
@@ -35,7 +35,6 @@ export default {
       // Проверяем текущий путь относительно нужных страниц
       const activePages = [
         '/risk-assessment',
-        '/non-contractual-risks', // добавьте другие нужные пути
         '/critical-risks',
         '/results'
       ]
@@ -119,7 +118,17 @@ header {
   font-weight: 500;
 }
 
-.logo {
+.logo_div {
+  position: relative;
+  cursor: pointer;
+  max-width: 450px; /* Ширина блока */
+  height: 87px; /* Высота блока */
+  margin: 0px;
+  top: 27px;
+  left: -25px;
+}
+
+.logo  {
 
   position: relative;
   cursor: pointer;

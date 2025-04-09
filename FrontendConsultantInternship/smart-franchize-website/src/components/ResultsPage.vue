@@ -5,14 +5,14 @@
     <div v-else-if="error">{{ error }}</div>
     <div v-else>
       <div class="rating">
-        <p><strong>Низкий риск:</strong> {{ lowCount }}</p>
-        <p><strong>Средний риск:</strong> {{ moderateCount }}</p>
-        <p><strong>Высокий риск:</strong> {{ highCount }}</p>
+        <p><strong>Ответов<br> c низким риском:</strong> {{ lowCount }}</p>
+        <p><strong>c средним риском:</strong> {{ moderateCount }}</p>
+        <p><strong>c высоким риском:</strong> {{ highCount }}</p>
       </div>
-      <button @click="toggleDetails">
+      <!-- <button @click="toggleDetails">
         {{ showDetails ? "Скрыть подробные результаты" : "Показать подробные результаты" }}
-      </button>
-      <ul v-if="showDetails">
+      </button> -->
+      <ul >
         <li v-for="(item, index) in results" :key="index" class="result-item">
           <p><strong>{{ item.title }}:</strong> {{ item.question }}</p>
           <p><strong>Ваш ответ:</strong> {{ item.answer }}</p>
@@ -24,7 +24,7 @@
       </ul>
     </div>
     <button v-if="showDetails" @click="goBack">Вернуться к вопросам</button>
-    <button v-if="showDetails" @click="goToNextPage">Перейти к недоговорным рискам</button>
+    <!-- <button v-if="showDetails" @click="goToNextPage">Перейти к недоговорным рискам</button> -->
   </div>
 </template>
 
@@ -54,7 +54,7 @@ export default {
         }
 
         // Отправка данных на сервер
-        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/v1/submit-answers`, {
+        const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/submit-answers`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export default {
   border: 1px solid #ccc;
 }
 
-h1 {
+h1{
   font-family: 'Tektur';
   font-size: 40px;
   font-weight: 400;
@@ -126,6 +126,9 @@ h1 {
   margin-bottom: 20px;
   padding: 15px;
   border-radius: 5px;
+  text-align: left;
+  background-color: white;
+  border-radius: 20px;
 }
 
 h3 {
@@ -136,6 +139,10 @@ h3 {
 
 p {
   margin: 5px 0;
+}
+
+ul{
+  list-style-type: none;
 }
 
 button {

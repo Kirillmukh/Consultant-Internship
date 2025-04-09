@@ -25,13 +25,13 @@
         target="_blank">Памятке о существенных условиях договора коммерческой концессии</a>.
     </p>
     <button @click="goToQuestionnaire">Все эти условия прописаны</button>
-    <p class="warning-paragraph">
+    <!-- <p class="warning-paragraph">
       <i>Также рекомендуем Вам воспользоваться нашим сервисом “<a href="/check-franchisor" target="_blank">Проверить
           Франчайзера</a>”, чтобы проверить Вашего контрагента по договору на предмет возможной
         недобросовестности.</i><br>
       Зачем проверять франчайзера? Ответ Вы можете найти в памятке “<a href="memo/check.html" target="_blank">О проверке
         Правообладателя</a>”
-    </p>
+    </p> -->
   </div>
 </template>
 
@@ -70,15 +70,17 @@ button {
   display: block;
   margin: 20px auto 0;
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #836645;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
+  font-family: 'Tektur';
+  font-size: 16px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #91582F;
 }
 
 .warning-paragraph {
