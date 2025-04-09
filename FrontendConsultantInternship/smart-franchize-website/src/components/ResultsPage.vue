@@ -76,9 +76,9 @@ export default {
           explanation: item.explanation,
           note: item.note || null, // Только если есть
         }));
-        this.lowCount = data.low_count;
-        this.moderateCount = data.moderate_count;
-        this.highCount = data.high_count;
+        this.lowCount = data.risks_count.Низкий;
+        this.moderateCount = data.risks_count.Средний;
+        this.highCount = data.risks_count.Высокий;
       } catch (error) {
         this.error = error.message;
       } finally {
