@@ -10,7 +10,7 @@
           ❓
         </span>
       </p>
-      <div v-for="option in currentQuestion.options" :key="option.id" class="option">
+      <div v-for="option in currentQuestion.answers" :key="option.id" class="option">
         <label>
           <input type="radio" :name="'question-' + currentQuestion.id" :value="option.id"
             v-model="answers[currentQuestion.id]" @change="saveProgress" />
@@ -72,11 +72,11 @@ export default {
         // Запрос к API для получения списка вопросов
         const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/v1/questions`);
         const data = await response.json();
-
-        if (data.success) {
+        console.log(data);
+        if (data) {
           console.log("Вопросы:", data);
           // Успешно получили вопросы
-          this.questions = data.data;
+          this.questions = data;
         } else {
           throw new Error("Не удалось загрузить вопросы");
         }
