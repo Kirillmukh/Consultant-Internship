@@ -13,45 +13,71 @@
       </p>
       <div v-for="option in currentQuestion.answers" :key="option.id" class="option">
         <label>
-          <input type="radio" :name="'question-' + currentQuestion.id" :value="option.id"
-            v-model="answers[currentQuestion.id]" @change="saveProgress" />
+          <input
+            type="radio"
+            :name="'question-' + currentQuestion.id"
+            :value="option.id"
+            v-model="answers[currentQuestion.id]"
+            @change="handleAnswerChange(option)"
+          />
           <span v-html="option.text"></span>
           <span v-if="option.hint" class="tooltip" :title="option.hint">
             ?
           </span>
         </label>
+
+        <!-- Рекурсивный рендеринг subanswers -->
+        <div v-if="option.subanswers && answers[currentQuestion.id] === option.id" class="subanswers">
+          <RecursiveSubanswers
+            :subanswers="option.subanswers"
+            :parent-id="option.id"
+            :parentAnswer="answers[currentQuestion.id]"
+            @update:parentAnswer="(value) => answers[currentQuestion.id] = value"
+            @update-subanswers="updateSubanswers"
+          />
+        </div>
       </div>
     </div>
 
     <!-- Кнопки навигации -->
     <div v-if="!loading" class="navigation-buttons">
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
-      <button @click="nextQuestion" :disabled="currentQuestionIndex === questions.length - 1">
-        Вперёд
-      </button>
+      <button @click="nextQuestion" :disabled="!isQuestionAnswered(currentQuestion)">Вперёд</button>
     </div>
 
     <!-- Кнопка отправки -->
     <div v-if="!loading">
-      <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
-        :disabled="Object.keys(answers).length !== questions.length">
+      <button
+        v-if="currentQuestionIndex === questions.length - 1"
+        @click="submitAnswers"
+        :disabled="!areAllQuestionsAnswered"
+      >
         Отправить ответы
       </button>
     </div>
-  
-   <!-- Прогресс-бар -->
-  <div v-if="!loading" class="progress-bar">
-    <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
-      :class="{ active: currentQuestionIndex === index, completed: answers[question.id] !== undefined }"
-      @click="goToQuestion(index)" :title="question.text"></div>
+
+    <!-- Прогресс-бар -->
+    <div v-if="!loading" class="progress-bar">
+      <div
+        v-for="(question, index) in questions"
+        :key="question.id"
+        class="progress-item"
+        :class="{ completed: isQuestionAnswered(question), active: currentQuestionIndex === index }"
+        @click="goToQuestion(index)"
+        :title="question.text"
+      ></div>
+    </div>
   </div>
-  
-</div>
 </template>
 
 <script>
+import RecursiveSubanswers from "./RecursiveSubanswers.vue";
+
 export default {
   name: "RiskAssessment",
+  components: {
+    RecursiveSubanswers,
+  },
   data() {
     return {
       questions: [], // Список вопросов
@@ -64,16 +90,16 @@ export default {
     currentQuestion() {
       return this.questions[this.currentQuestionIndex];
     },
+    areAllQuestionsAnswered() {
+      return this.questions.every((question) => this.isQuestionAnswered(question));
+    },
   },
   methods: {
     async fetchQuestions() {
       try {
-        // Запрос к API для получения списка вопросов
         const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/api/v1/questions`);
         const data = await response.json();
-        console.log(data);
         if (data) {
-          // Успешно получили вопросы
           this.questions = data;
         } else {
           throw new Error("Не удалось загрузить вопросы");
@@ -82,9 +108,32 @@ export default {
         console.error("Ошибка загрузки вопросов:", error);
         alert("Не удалось загрузить вопросы. Попробуйте позже.");
       } finally {
-        this.loading = false; // Снимаем флаг загрузки
+        this.loading = false;
       }
       this.loadProgress();
+    },
+    handleAnswerChange(option) {
+      if (!option.subanswers) return;
+      // Удаляем ответы на предыдущие subanswers, если пользователь выбрал другой ответ
+      this.answers = Object.fromEntries(
+        Object.entries(this.answers).filter(([key]) => !key.startsWith(`${option.id}-`))
+      );
+    },
+    updateSubanswers(parentId, subanswers) {
+      // Обновляем ответы на subanswers
+      Object.keys(subanswers).forEach((key) => {
+        this.answers[`${parentId}-${key}`] = subanswers[key];
+      });
+    },
+    isQuestionAnswered(question) {
+      if (!this.answers[question.id]) return false;
+      const selectedOption = question.answers.find((opt) => opt.id === this.answers[question.id]);
+      if (selectedOption && selectedOption.subanswers) {
+        return selectedOption.subanswers.every((sub) =>
+          this.isQuestionAnswered({ id: `${question.id}-${sub.id}`, answers: sub.answers })
+        );
+      }
+      return true;
     },
     nextQuestion() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
@@ -102,18 +151,14 @@ export default {
       this.currentQuestionIndex = index;
       this.saveProgress();
     },
-
     submitAnswers() {
-      // Переход на страницу результатов
       this.$router.push({ name: "results" });
     },
     saveProgress() {
-      // Сохранение текущего прогресса в localStorage
       localStorage.setItem("riskAssessmentAnswers", JSON.stringify(this.answers));
       localStorage.setItem("riskAssessmentCurrentQuestion", this.currentQuestionIndex);
     },
     loadProgress() {
-      // Загрузка прогресса из localStorage
       const savedAnswers = localStorage.getItem("riskAssessmentAnswers");
       const savedQuestionIndex = localStorage.getItem("riskAssessmentCurrentQuestion");
 
@@ -123,14 +168,6 @@ export default {
       if (savedQuestionIndex) {
         this.currentQuestionIndex = parseInt(savedQuestionIndex, 10);
       }
-    },
-    resetProgress() {
-      // Сброс прогресса
-      // this.answers = {};
-      // this.currentQuestionIndex = 0;
-      localStorage.removeItem("riskAssessmentAnswers");
-      localStorage.removeItem("riskAssessmentCurrentQuestion");
-      this.$router.push({ name: "home" });
     },
   },
   mounted() {
@@ -158,6 +195,9 @@ h1 {
 .question_body{
   font-size: 20px;
   font-weight: bold;
+  text-align: left;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 .progress-bar {
@@ -177,12 +217,13 @@ h1 {
   transition: background-color 0.3s, border-color 0.3s;
 }
 
-.progress-item.active {
-  background-color: #91582F;
-}
 
 .progress-item.completed {
   background-color: #836645;
+}
+
+.progress-item.active {
+  background-color: #ff6a00;
 }
 
 .tooltip {
@@ -210,6 +251,13 @@ h1 {
 .option {
   margin-bottom: 10px;
   color: black;
+  text-align: left; /* Добавлено выравнивание текста по левому краю */
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.option span {
+  text-align: left; /* Выравнивание текста по левому краю */
 }
 
 .navigation-buttons {
