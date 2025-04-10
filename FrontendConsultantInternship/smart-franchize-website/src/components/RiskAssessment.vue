@@ -1,7 +1,7 @@
 <template>
   <div class="risk-assessment">
     <h1 v-if="loading">Вопросы загружаются...</h1>
-    <h1 v-else>{{ currentQuestion.title }}</h1>
+    <h1 v-else>Вопрос {{ currentQuestionIndex + 1 }}</h1>
 
     <!-- Текущий вопрос -->
     <div v-if="!loading && currentQuestion">
@@ -29,17 +29,16 @@
       </div>
     </div>
 
-    <!-- Кнопки навигации -->    
+    <!-- Кнопки навигации -->
     <div v-if="!loading" class="navigation-buttons">
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
-      <button
-        v-if="currentQuestionIndex === questions.length - 1"
-        @click="submitAnswers"
-        :disabled="!areAllQuestionsAnswered"
-      >
-        Отправить ответы
+      <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
+        :disabled="!areAllQuestionsAnswered">
+        К результатам
       </button>
-      <button v-else @click="nextQuestion">Вперёд</button>
+      <button v-else @click="nextQuestion">
+        Вперёд
+      </button>
     </div>
 
     <!-- Прогресс-бар -->
@@ -91,9 +90,10 @@ export default {
       } finally {
         this.loading = false;
       }
+      this.loadProgress();
     },
     handleAnswerChange(option) {
-      if (!option.subAnswers) return;
+      if (!option.subanswers) return;
       // Удаляем ответы на предыдущие subanswers, если пользователь выбрал другой ответ
       this.answers = Object.fromEntries(
         Object.entries(this.answers).filter(([key]) => !key.startsWith(`${option.id}-`))
@@ -108,8 +108,8 @@ export default {
     isQuestionAnswered(question) {
       if (!this.answers[question.id]) return false;
       const selectedOption = question.answers.find((opt) => opt.id === this.answers[question.id]);
-      if (selectedOption && selectedOption.subAnswers) {
-        return selectedOption.subAnswers.every((sub) =>
+      if (selectedOption && selectedOption.subanswers) {
+        return selectedOption.subanswers.every((sub) =>
           this.isQuestionAnswered({ id: `${question.id}-${sub.id}`, answers: sub.answers })
         );
       }
@@ -118,16 +118,36 @@ export default {
     nextQuestion() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
         this.currentQuestionIndex++;
+        this.saveProgress();
       }
     },
     prevQuestion() {
       if (this.currentQuestionIndex > 0) {
         this.currentQuestionIndex--;
+        this.saveProgress();
       }
     },
+    goToQuestion(index) {
+      this.currentQuestionIndex = index;
+      this.saveProgress();
+    },
     submitAnswers() {
-      console.log("Ответы отправлены:", this.answers);
       this.$router.push({ name: "results" });
+    },
+    saveProgress() {
+      localStorage.setItem("riskAssessmentAnswers", JSON.stringify(this.answers));
+      localStorage.setItem("riskAssessmentCurrentQuestion", this.currentQuestionIndex);
+    },
+    loadProgress() {
+      const savedAnswers = localStorage.getItem("riskAssessmentAnswers");
+      const savedQuestionIndex = localStorage.getItem("riskAssessmentCurrentQuestion");
+
+      if (savedAnswers) {
+        this.answers = JSON.parse(savedAnswers);
+      }
+      if (savedQuestionIndex) {
+        this.currentQuestionIndex = parseInt(savedQuestionIndex, 10);
+      }
     },
   },
   mounted() {
