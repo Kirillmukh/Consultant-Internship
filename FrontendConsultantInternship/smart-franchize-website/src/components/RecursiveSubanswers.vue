@@ -4,16 +4,16 @@
       <label>
         <input
           type="radio"
-          :name="'subanswer-' + parentId + '-' + subanswer.id"
+          :name="'subanswer-' + parentId"
           :value="subanswer.id"
-          v-model="localAnswers[subanswer.id]"
-          @change="updateParentAnswers"
+          v-model="localAnswers[parentId]"
+          @change="handleAnswerChange(subanswer)"
         />
         <span v-html="subanswer.text"></span>
       </label>
 
       <!-- Рекурсивный вызов для вложенных subanswers -->
-      <div v-if="subanswer.subAnswers && localAnswers[subanswer.id]" class="nested-subanswers">
+      <div v-if="subanswer.subAnswers && localAnswers[parentId] === subanswer.id" class="nested-subanswers">
         <RecursiveSubanswers
           :subanswers="subanswer.subAnswers"
           :parent-id="subanswer.id"
@@ -33,11 +33,19 @@ export default {
   },
   data() {
     return {
-      localAnswers: {},
+      localAnswers: {}, // Локальные ответы для текущего уровня
     };
   },
   methods: {
+    handleAnswerChange(subanswer) {
+      // Очищаем вложенные ответы, если выбран другой вариант
+      if (!subanswer.subAnswers) {
+        this.localAnswers = {};
+      }
+      this.updateParentAnswers();
+    },
     updateParentAnswers() {
+      // Передаём обновлённые ответы в родительский компонент
       this.$emit("update-subanswers", this.parentId, this.localAnswers);
     },
   },
@@ -45,5 +53,11 @@ export default {
 </script>
 
 <style scoped>
-/* Добавьте стили для оформления */
+.option {
+  margin-bottom: 10px;
+}
+
+.nested-subanswers {
+  margin-left: 20px;
+}
 </style>
