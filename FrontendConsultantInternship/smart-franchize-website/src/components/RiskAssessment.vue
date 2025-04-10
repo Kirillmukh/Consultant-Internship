@@ -5,23 +5,30 @@
 
     <!-- Текущий вопрос -->
     <div v-if="!loading && currentQuestion">
-      <p class="question_body">{{ currentQuestion.text }}</p>
-      <!-- Используем currentQuestion.id для именования группы.
-           Подписываемся на событие answer-selected, чтобы получать выбранное значение -->
-      <RecursiveRadio 
-        :answers="currentQuestion.answers" 
-        :group-name="'group-' + currentQuestion.id" 
-        @answer-selected="handleAnswerSelected" />
+      <p class="question_body">
+        {{ currentQuestion.text }}
+        <span v-if="currentQuestion.hint" class="tooltip" :title="currentQuestion.hint">
+          ?
+        </span>
+      </p>
+      <div v-for="option in currentQuestion.answers" :key="option.id" class="option">
+         <label>
+           <input type="radio" :name="'question-' + currentQuestion.id" :value="option.id"
+             v-model="answers[currentQuestion.id]" @change="saveProgress" />
+           <span v-html="option.text"></span>
+           <span v-if="option.hint" class="tooltip" :title="option.hint">
+             ?
+           </span>
+         </label>
+       </div>
     </div>
 
     <!-- Кнопки навигации -->
     <div v-if="!loading" class="navigation-buttons">
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
-      <button 
-        v-if="currentQuestionIndex === questions.length - 1" 
-        @click="submitAnswers"
+      <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
         :disabled="!areAllQuestionsAnswered">
-        К результатам
+        Перейти к результатам
       </button>
       <button v-else @click="nextQuestion">
         Вперёд
@@ -30,32 +37,25 @@
 
     <!-- Прогресс-бар -->
     <div v-if="!loading" class="progress-bar">
-      <div 
-        v-for="(question, index) in questions" 
-        :key="question.id" 
-        class="progress-item"
+      <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
         :class="{ completed: isQuestionAnswered(question), active: currentQuestionIndex === index }"
-        @click="goToQuestion(index)" 
-        :title="question.text">
-      </div>
+        @click="goToQuestion(index)" :title="question.text"></div>
     </div>
   </div>
 </template>
 
 <script>
-import RecursiveRadio from "./RecursiveRadio.vue";
 
 export default {
   name: "RiskAssessment",
   components: {
-    RecursiveRadio,
   },
   data() {
     return {
-      questions: [],           // Список вопросов
+      questions: [], // Список вопросов
       currentQuestionIndex: 0, // Индекс текущего вопроса
-      answers: {},             // Ответы пользователя, например: { questionId: selectedAnswerId }
-      loading: true,           // Флаг загрузки
+      answers: {}, // Ответы пользователя
+      loading: true, // Флаг загрузки
     };
   },
   computed: {
@@ -84,29 +84,28 @@ export default {
       }
       this.loadProgress();
     },
-    handleAnswerSelected(payload) {
-      // payload должен содержать { id: <selectedAnswerId>, groupName: <группа> }
-      // Сохраняем выбранный ответ для текущего вопроса
-      this.$set(this.answers, this.currentQuestion.id, payload.id);
-      // Если требуется — можно дополнительно вызвать handleAnswerChange для очистки subanswers и т.п.
-      this.handleAnswerChange(payload);
-      // Сохраняем прогресс
-      this.saveProgress();
-    },
     handleAnswerChange(option) {
-      // Если у выбранного варианта есть subanswers – очищаем ранее выбранные подварианты
-      if (option && option.id) {
-        // Очищаем все ключи в answers, которые начинаются с `<currentQuestion.id>-`
-        Object.keys(this.answers).forEach((key) => {
-          if (key.startsWith(`${this.currentQuestion.id}-`)) {
-            this.$delete(this.answers, key);
-          }
-        });
-      }
+      if (!option.subanswers) return;
+      // Удаляем ответы на предыдущие subanswers, если пользователь выбрал другой ответ
+      this.answers = Object.fromEntries(
+        Object.entries(this.answers).filter(([key]) => !key.startsWith(`${option.id}-`))
+      );
+    },
+    updateSubanswers(parentId, subanswers) {
+      // Обновляем ответы на subanswers
+      Object.keys(subanswers).forEach((key) => {
+        this.answers[`${parentId}-${key}`] = subanswers[key];
+      });
     },
     isQuestionAnswered(question) {
-      // В простейшем случае считаем, что вопрос отвечен, если в answers есть значение по ключу question.id
-      return !!this.answers[question.id];
+      if (!this.answers[question.id]) return false;
+      const selectedOption = question.answers.find((opt) => opt.id === this.answers[question.id]);
+      if (selectedOption && selectedOption.subanswers) {
+        return selectedOption.subanswers.every((sub) =>
+          this.isQuestionAnswered({ id: `${question.id}-${sub.id}`, answers: sub.answers })
+        );
+      }
+      return true;
     },
     nextQuestion() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
@@ -125,7 +124,7 @@ export default {
       this.saveProgress();
     },
     submitAnswers() {
-      this.$router.push({ name: "results", params: { answers: this.answers } });
+      this.$router.push({ name: "results" });
     },
     saveProgress() {
       localStorage.setItem("riskAssessmentAnswers", JSON.stringify(this.answers));
