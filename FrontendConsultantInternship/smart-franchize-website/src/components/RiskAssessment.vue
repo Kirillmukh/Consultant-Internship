@@ -13,13 +13,8 @@
       </p>
       <div v-for="option in currentQuestion.answers" :key="option.id" class="option">
         <label>
-          <input
-            type="radio"
-            :name="'question-' + currentQuestion.id"
-            :value="option.id"
-            v-model="answers[currentQuestion.id]"
-            @change="handleAnswerChange(option)"
-          />
+          <input type="radio" :name="'question-' + currentQuestion.id" :value="option.id"
+            v-model="answers[currentQuestion.id]" @change="handleAnswerChange(option)" />
           <span v-html="option.text"></span>
           <span v-if="option.hint" class="tooltip" :title="option.hint">
             ?
@@ -28,13 +23,10 @@
 
         <!-- Рекурсивный рендеринг subanswers -->
         <div v-if="option.subanswers && answers[currentQuestion.id] === option.id" class="subanswers">
-          <RecursiveSubanswers
-            :subanswers="option.subanswers"
-            :parent-id="option.id"
+          <RecursiveSubanswers :subanswers="option.subanswers" :parent-id="option.id"
             :parentAnswer="answers[currentQuestion.id]"
             @update:parentAnswer="(value) => answers[currentQuestion.id] = value"
-            @update-subanswers="updateSubanswers"
-          />
+            @update-subanswers="updateSubanswers" />
         </div>
       </div>
     </div>
@@ -42,31 +34,20 @@
     <!-- Кнопки навигации -->
     <div v-if="!loading" class="navigation-buttons">
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
-      <button @click="nextQuestion" :disabled="currentQuestionIndex === questions.length - 1">Вперёд</button>
-    </div>
-
-    
-    <!-- Кнопка отправки -->
-    <div v-if="!loading">
-      <button
-        v-if="currentQuestionIndex === questions.length - 1"
-        @click="submitAnswers"
-        :disabled="!areAllQuestionsAnswered"
-      >
-        Отправить ответы
+      <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
+        :disabled="!areAllQuestionsAnswered">
+        Перейти к результатам
+      </button>
+      <button v-else @click="nextQuestion">
+        Вперёд
       </button>
     </div>
 
     <!-- Прогресс-бар -->
     <div v-if="!loading" class="progress-bar">
-      <div
-        v-for="(question, index) in questions"
-        :key="question.id"
-        class="progress-item"
+      <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
         :class="{ completed: isQuestionAnswered(question), active: currentQuestionIndex === index }"
-        @click="goToQuestion(index)"
-        :title="question.text"
-      ></div>
+        @click="goToQuestion(index)" :title="question.text"></div>
     </div>
   </div>
 </template>
@@ -193,7 +174,7 @@ h1 {
   font-weight: 400;
 }
 
-.question_body{
+.question_body {
   font-size: 20px;
   font-weight: bold;
   text-align: left;
@@ -238,27 +219,29 @@ h1 {
   color: white;
   border-radius: 4px;
   font-size: 0.8em;
-  
+
   vertical-align: super;
   margin-left: 4px;
   position: relative;
   top: -0.4em;
 }
 
-.tooltip:hover{
+.tooltip:hover {
   background-color: #91582F;
 }
 
 .option {
   margin-bottom: 10px;
   color: black;
-  text-align: left; /* Добавлено выравнивание текста по левому краю */
+  text-align: left;
+  /* Добавлено выравнивание текста по левому краю */
   padding-left: 50px;
   padding-right: 50px;
 }
 
 .option span {
-  text-align: left; /* Выравнивание текста по левому краю */
+  text-align: left;
+  /* Выравнивание текста по левому краю */
 }
 
 .navigation-buttons {
