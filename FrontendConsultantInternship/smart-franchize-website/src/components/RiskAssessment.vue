@@ -42,7 +42,7 @@
     <!-- Кнопки навигации -->
     <div v-if="!loading" class="navigation-buttons">
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
-      <button @click="nextQuestion" :disabled="!isQuestionAnswered(currentQuestion)">Вперёд</button>
+      <button @click="nextQuestion" :disabled="currentQuestionIndex === questions.length - 1">Вперёд</button>
     </div>
 
     <!-- Кнопка отправки -->
