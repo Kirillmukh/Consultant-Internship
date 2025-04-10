@@ -28,7 +28,7 @@
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
       <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
         :disabled="!areAllQuestionsAnswered">
-        Перейти к результатам
+        К результатам
       </button>
       <button v-else @click="nextQuestion">
         Вперёд
