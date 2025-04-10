@@ -58,6 +58,9 @@ export default {
 
 .memo-page h1 {
     text-align: center;
+    font-family: 'Tektur';
+    font-weight: 500;
+    font-size: 30px;
 }
 
 .memo-page p,
