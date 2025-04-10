@@ -271,8 +271,24 @@ button:disabled {
   background-color: #c82333;
 }
 
-/* Скрываем стандартную радиокнопку */
 input[type="radio"] {
-  accent-color: #836645;
+  appearance: none; /* Убираем стандартный стиль радиокнопки */
+  width: 16px; /* Устанавливаем ширину */
+  height: 16px; /* Устанавливаем высоту */
+  border: 2px solid white; /* Белые границы */
+  border-radius: 50%; /* Делаем радиокнопку круглой */
+  background-color: white; /* Прозрачный фон */
+  cursor: pointer; /* Указатель при наведении */
+  display: inline-block;
+}
+
+input[type="radio"]:checked {
+  background-color: #836645; /* Цвет заливки при выборе */
+  border-color: #836645; /* Цвет границы при выборе */
+}
+
+input[type="radio"]:focus {
+  outline: none; /* Убираем стандартный фокус */
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8); /* Добавляем эффект фокуса */
 }
 </style>
