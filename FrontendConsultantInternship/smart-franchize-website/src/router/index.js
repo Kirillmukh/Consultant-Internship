@@ -14,14 +14,14 @@ const routes = [
   { path: '/risk-assessment', name: 'risk-assessment', component: RiskAssessment, meta: { title: 'Оценка рисков' } },
   { path: '/check-franchisor', name: 'check-franchisor', component: CheckFranchisor, meta: { title: 'Проверка франчайзера' } },
   { path: '/results', name: 'results', component: ResultsPage, props: true, meta: { title: 'Результаты' } },
-  { path: '/non-contractual-risks', name: 'non-contractual-risks', component: NonContractualRisks, meta: { title: 'Внедоговорные риски' } },
+  { path: '/memos', name: 'non-contractual-risks', component: NonContractualRisks, meta: { title: 'Памятки' } },
   { path: '/critical-risks', name: 'critical-risks', component: CriticalRisks, meta: { title: 'Критические риски' } },
   {
     path: '/memo/:file',
     name: 'memo',
     component: MemoPage,
     props: (route) => ({ memoFile: route.params.file }),
-    meta: { title: 'Меморандум' },
+    meta: { title: 'Памятка' },
   },
 ];
 

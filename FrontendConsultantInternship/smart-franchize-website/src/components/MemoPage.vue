@@ -36,8 +36,9 @@ export default {
                 if (h1) {
                     this.title = h1.textContent;
                 } else {
-                    this.title = 'Заметка';
+                    this.title = 'Памятка';
                 }
+                document.title = this.title; // Устанавливаем заголовок страницы
             } catch (error) {
                 console.error(error);
                 this.content = '<p>Не удалось загрузить заметку.</p>';

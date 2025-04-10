@@ -10,7 +10,7 @@
         <!-- <router-link to="/" class="navigations_item">Главная<div class="underline"></div></router-link> -->
         <div class="navigations_item" @click="navigateToRiskAssessment" :class="{ 'active': isActive }">Оценить риски<div class="underline"></div></div>
         <router-link to='/about-franchising' class="navigations_item">Q/A<br> о франчайзинге<div class="underline"></div></router-link>
-        <router-link to="/non-contractual-risks" class="navigations_item">Памятки для франчайзи<div class="underline"></div></router-link>
+        <router-link to="/memos" class="navigations_item">Памятки для франчайзи<div class="underline"></div></router-link>
       </div>
     </header>
     <main>
