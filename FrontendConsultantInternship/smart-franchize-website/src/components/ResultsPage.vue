@@ -14,7 +14,7 @@
       </button> -->
       <ul >
         <li v-for="(item, index) in results" :key="index" class="result-item">
-          <p><strong>{{ item.title }}:</strong> {{ item.question }}</p>
+          <p><strong>Вопрос:</strong> {{ item.question }}</p>
           <p><strong>Ваш ответ:</strong> {{ item.answer }}</p>
           <p><strong>УРОВЕНЬ РИСКА:</strong> {{ item.risk_level }}</p>
           <p v-if="item.explanation"><strong>ПОЧЕМУ:</strong> <span v-html="item.explanation"></span></p>
