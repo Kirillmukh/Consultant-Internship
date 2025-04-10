@@ -195,7 +195,7 @@ h1 {
 }
 
 .progress-item.active {
-  background-color: #ff6a00;
+  background-color: #00695A;
 }
 
 .tooltip {
