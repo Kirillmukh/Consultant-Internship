@@ -9,24 +9,32 @@ import CriticalRisks from '@/components/CriticalRisks.vue';
 import MemoPage from '@/components/MemoPage.vue';
 
 const routes = [
-  { path: '/', name: 'home', component: HomePage },
-  { path: '/about-franchising', name: 'about-franchising', component: AboutFranchising },
-  { path: '/risk-assessment', name: 'risk-assessment', component: RiskAssessment },
-  { path: '/check-franchisor', name: 'check-franchisor', component: CheckFranchisor },
-  { path: '/results', name: 'results', component: ResultsPage, props: true },
-  { path: '/non-contractual-risks', name: 'non-contractual-risks', component: NonContractualRisks },
-  { path: '/critical-risks', name: 'critical-risks', component: CriticalRisks },
+  { path: '/', name: 'home', component: HomePage, meta: { title: 'Главная - СмартФранчайз' } },
+  { path: '/about-franchising', name: 'about-franchising', component: AboutFranchising, meta: { title: 'О франчайзинге' } },
+  { path: '/risk-assessment', name: 'risk-assessment', component: RiskAssessment, meta: { title: 'Оценка рисков' } },
+  { path: '/check-franchisor', name: 'check-franchisor', component: CheckFranchisor, meta: { title: 'Проверка франчайзера' } },
+  { path: '/results', name: 'results', component: ResultsPage, props: true, meta: { title: 'Результаты' } },
+  { path: '/non-contractual-risks', name: 'non-contractual-risks', component: NonContractualRisks, meta: { title: 'Внедоговорные риски' } },
+  { path: '/critical-risks', name: 'critical-risks', component: CriticalRisks, meta: { title: 'Критические риски' } },
   {
     path: '/memo/:file',
     name: 'memo',
     component: MemoPage,
-    props: (route) => ({ memoFile: route.params.file })
+    props: (route) => ({ memoFile: route.params.file }),
+    meta: { title: 'Меморандум' },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
+  next();
 });
 
 export default router;
