@@ -45,17 +45,6 @@
       <button @click="nextQuestion" :disabled="currentQuestionIndex === questions.length - 1">Вперёд</button>
     </div>
 
-    <!-- Кнопка отправки -->
-    <div v-if="!loading">
-      <button
-        v-if="currentQuestionIndex === questions.length - 1"
-        @click="submitAnswers"
-        :disabled="!areAllQuestionsAnswered"
-      >
-        Отправить ответы
-      </button>
-    </div>
-
     <!-- Прогресс-бар -->
     <div v-if="!loading" class="progress-bar">
       <div
@@ -66,6 +55,16 @@
         @click="goToQuestion(index)"
         :title="question.text"
       ></div>
+    </div>
+
+    <!-- Кнопка отправки -->
+    <div v-if="!loading">
+      <button
+        @click="submitAnswers"
+        :disabled="!areAllQuestionsAnswered"
+      >
+        Отправить ответы
+      </button>
     </div>
   </div>
 </template>
