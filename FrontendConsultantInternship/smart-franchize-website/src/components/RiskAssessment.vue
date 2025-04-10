@@ -15,6 +15,7 @@
          <label>
            <input type="radio" :name="'question-' + currentQuestion.id" :value="option.id"
              v-model="answers[currentQuestion.id]" @change="saveProgress" />
+             <span class="custom-radio-circle"></span>
            <span v-html="option.text"></span>
            <span v-if="option.hint" class="tooltip" :title="option.hint">
              ?
@@ -191,11 +192,11 @@ h1 {
 
 
 .progress-item.completed {
-  background-color: #00695A;
+  background-color: #836645;
 }
 
 .progress-item.active {
-  background-color: #836645;
+  background-color: #FFFFFF;
 }
 
 .tooltip {
@@ -269,5 +270,45 @@ button:disabled {
 
 .reset-button:hover {
   background-color: #c82333;
+}
+
+/* Скрываем стандартную радиокнопку */
+input[type="radio"] {
+  display: none;
+}
+
+/* Стили для кастомной радиокнопки */
+.custom-radio-circle {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #836645;
+  border-radius: 50%;
+  position: relative;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked + .custom-radio-circle {
+  background-color: #836645;
+}
+
+.custom-radio-circle::after {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+input[type="radio"]:checked + .custom-radio-circle::after {
+  opacity: 1;
 }
 </style>
