@@ -1,9 +1,10 @@
 <template>
   <div class="risk-assessment">
-    <h1>Вопрос {{ currentQuestionIndex + 1 }}</h1>
+    <h1 v-if="loading">Вопросы загружаются...</h1>
+    <h1 v-else>Вопрос {{ currentQuestionIndex + 1 }}</h1>
 
     <!-- Текущий вопрос -->
-    <div v-if="currentQuestion">
+    <div v-if="!loading && currentQuestion">
       <p class="question_body">
         {{ currentQuestion.text }}
         <span v-if="currentQuestion.hint" class="tooltip" :title="currentQuestion.hint">
@@ -23,32 +24,29 @@
     </div>
 
     <!-- Кнопки навигации -->
-    <div class="navigation-buttons">
+    <div v-if="!loading" class="navigation-buttons">
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
       <button @click="nextQuestion" :disabled="currentQuestionIndex === questions.length - 1">
         Вперёд
       </button>
     </div>
 
-    <!-- Кнопка сброса -->
-    <!-- <button class="reset-button" @click="resetProgress">Сбросить</button> -->
-
     <!-- Кнопка отправки -->
-    <div>
-    <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
-      :disabled="Object.keys(answers).length !== questions.length">
-      Отправить ответы
-    </button>
+    <div v-if="!loading">
+      <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
+        :disabled="Object.keys(answers).length !== questions.length">
+        Отправить ответы
+      </button>
     </div>
-  </div>
   
    <!-- Прогресс-бар -->
-  <div class="progress-bar">
+  <div v-if="!loading" class="progress-bar">
     <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
       :class="{ active: currentQuestionIndex === index, completed: answers[question.id] !== undefined }"
       @click="goToQuestion(index)" :title="question.text"></div>
   </div>
   
+</div>
 </template>
 
 <script>
@@ -59,6 +57,7 @@ export default {
       questions: [], // Список вопросов
       currentQuestionIndex: 0, // Индекс текущего вопроса
       answers: {}, // Ответы пользователя
+      loading: true, // Флаг загрузки
     };
   },
   computed: {
@@ -74,7 +73,6 @@ export default {
         const data = await response.json();
         console.log(data);
         if (data) {
-          console.log("Вопросы:", data);
           // Успешно получили вопросы
           this.questions = data;
         } else {
@@ -83,6 +81,8 @@ export default {
       } catch (error) {
         console.error("Ошибка загрузки вопросов:", error);
         alert("Не удалось загрузить вопросы. Попробуйте позже.");
+      } finally {
+        this.loading = false; // Снимаем флаг загрузки
       }
       this.loadProgress();
     },
