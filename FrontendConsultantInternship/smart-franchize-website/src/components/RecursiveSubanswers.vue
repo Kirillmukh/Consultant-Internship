@@ -10,16 +10,13 @@
           @change="updateParentAnswers"
         />
         <span v-html="subanswer.text"></span>
-        <span v-if="subanswer.hint" class="tooltip" :title="subanswer.hint">?</span>
       </label>
 
       <!-- Рекурсивный вызов для вложенных subanswers -->
-      <div v-if="subanswer.subanswers && localAnswers[subanswer.id]" class="nested-subanswers">
+      <div v-if="subanswer.subAnswers && localAnswers[subanswer.id]" class="nested-subanswers">
         <RecursiveSubanswers
-          :subanswers="subanswer.subanswers"
+          :subanswers="subanswer.subAnswers"
           :parent-id="subanswer.id"
-          :modelValue="localAnswers[subanswer.id]"
-          @update:modelValue="value => localAnswers[subanswer.id] = value"
           @update-subanswers="updateParentAnswers"
         />
       </div>
@@ -33,7 +30,6 @@ export default {
   props: {
     subanswers: Array,
     parentId: String,
-    parentAnswer: String,
   },
   data() {
     return {
@@ -47,3 +43,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Добавьте стили для оформления */
+</style>

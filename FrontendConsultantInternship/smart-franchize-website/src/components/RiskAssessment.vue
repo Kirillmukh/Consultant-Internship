@@ -1,32 +1,30 @@
 <template>
   <div class="risk-assessment">
     <h1 v-if="loading">Вопросы загружаются...</h1>
-    <h1 v-else>Вопрос {{ currentQuestionIndex + 1 }}</h1>
+    <h1 v-else>{{ currentQuestion.title }}</h1>
 
     <!-- Текущий вопрос -->
     <div v-if="!loading && currentQuestion">
-      <p class="question_body">
-        {{ currentQuestion.text }}
-        <span v-if="currentQuestion.hint" class="tooltip" :title="currentQuestion.hint">
-          ?
-        </span>
-      </p>
+      <p class="question_body">{{ currentQuestion.text }}</p>
       <div v-for="option in currentQuestion.answers" :key="option.id" class="option">
         <label>
-          <input type="radio" :name="'question-' + currentQuestion.id" :value="option.id"
-            v-model="answers[currentQuestion.id]" @change="handleAnswerChange(option)" />
+          <input
+            type="radio"
+            :name="'question-' + currentQuestion.id"
+            :value="option.id"
+            v-model="answers[currentQuestion.id]"
+            @change="handleAnswerChange(option)"
+          />
           <span v-html="option.text"></span>
-          <span v-if="option.hint" class="tooltip" :title="option.hint">
-            ?
-          </span>
         </label>
 
         <!-- Рекурсивный рендеринг subanswers -->
-        <div v-if="option.subanswers && answers[currentQuestion.id] === option.id" class="subanswers">
-          <RecursiveSubanswers :subanswers="option.subanswers" :parent-id="option.id"
-            :parentAnswer="answers[currentQuestion.id]"
-            @update:parentAnswer="(value) => answers[currentQuestion.id] = value"
-            @update-subanswers="updateSubanswers" />
+        <div v-if="option.subAnswers && answers[currentQuestion.id] === option.id" class="subanswers">
+          <RecursiveSubanswers
+            :subanswers="option.subAnswers"
+            :parent-id="option.id"
+            @update-subanswers="updateSubanswers"
+          />
         </div>
       </div>
     </div>
@@ -34,20 +32,14 @@
     <!-- Кнопки навигации -->
     <div v-if="!loading" class="navigation-buttons">
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
-      <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
-        :disabled="!areAllQuestionsAnswered">
-        К результатам
+      <button
+        v-if="currentQuestionIndex === questions.length - 1"
+        @click="submitAnswers"
+        :disabled="!areAllQuestionsAnswered"
+      >
+        Отправить ответы
       </button>
-      <button v-else @click="nextQuestion">
-        Вперёд
-      </button>
-    </div>
-
-    <!-- Прогресс-бар -->
-    <div v-if="!loading" class="progress-bar">
-      <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
-        :class="{ completed: isQuestionAnswered(question), active: currentQuestionIndex === index }"
-        @click="goToQuestion(index)" :title="question.text"></div>
+      <button v-else @click="nextQuestion">Вперёд</button>
     </div>
   </div>
 </template>
@@ -92,10 +84,9 @@ export default {
       } finally {
         this.loading = false;
       }
-      this.loadProgress();
     },
     handleAnswerChange(option) {
-      if (!option.subanswers) return;
+      if (!option.subAnswers) return;
       // Удаляем ответы на предыдущие subanswers, если пользователь выбрал другой ответ
       this.answers = Object.fromEntries(
         Object.entries(this.answers).filter(([key]) => !key.startsWith(`${option.id}-`))
@@ -110,8 +101,8 @@ export default {
     isQuestionAnswered(question) {
       if (!this.answers[question.id]) return false;
       const selectedOption = question.answers.find((opt) => opt.id === this.answers[question.id]);
-      if (selectedOption && selectedOption.subanswers) {
-        return selectedOption.subanswers.every((sub) =>
+      if (selectedOption && selectedOption.subAnswers) {
+        return selectedOption.subAnswers.every((sub) =>
           this.isQuestionAnswered({ id: `${question.id}-${sub.id}`, answers: sub.answers })
         );
       }
@@ -120,36 +111,16 @@ export default {
     nextQuestion() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
         this.currentQuestionIndex++;
-        this.saveProgress();
       }
     },
     prevQuestion() {
       if (this.currentQuestionIndex > 0) {
         this.currentQuestionIndex--;
-        this.saveProgress();
       }
-    },
-    goToQuestion(index) {
-      this.currentQuestionIndex = index;
-      this.saveProgress();
     },
     submitAnswers() {
+      console.log("Ответы отправлены:", this.answers);
       this.$router.push({ name: "results" });
-    },
-    saveProgress() {
-      localStorage.setItem("riskAssessmentAnswers", JSON.stringify(this.answers));
-      localStorage.setItem("riskAssessmentCurrentQuestion", this.currentQuestionIndex);
-    },
-    loadProgress() {
-      const savedAnswers = localStorage.getItem("riskAssessmentAnswers");
-      const savedQuestionIndex = localStorage.getItem("riskAssessmentCurrentQuestion");
-
-      if (savedAnswers) {
-        this.answers = JSON.parse(savedAnswers);
-      }
-      if (savedQuestionIndex) {
-        this.currentQuestionIndex = parseInt(savedQuestionIndex, 10);
-      }
     },
   },
   mounted() {
