@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <!-- Кнопки навигации -->
+    <!-- Кнопки навигации -->    
     <div v-if="!loading" class="navigation-buttons">
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
       <button
@@ -40,6 +40,13 @@
         Отправить ответы
       </button>
       <button v-else @click="nextQuestion">Вперёд</button>
+    </div>
+
+    <!-- Прогресс-бар -->
+    <div v-if="!loading" class="progress-bar">
+      <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
+        :class="{ completed: isQuestionAnswered(question), active: currentQuestionIndex === index }"
+        @click="goToQuestion(index)" :title="question.text"></div>
     </div>
   </div>
 </template>
