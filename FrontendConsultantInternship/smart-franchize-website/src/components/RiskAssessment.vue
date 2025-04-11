@@ -11,50 +11,75 @@
           ?
         </span>
       </p>
+
+      <!-- Основные радиокнопки -->
       <div v-for="option in currentQuestion.answers" :key="option.id" class="option">
-         <label>
-           <input type="radio" :name="'question-' + currentQuestion.id" :value="option.id"
-             v-model="answers[currentQuestion.id]" @change="saveProgress" />
-           <span v-html="option.text"></span>
-           <span v-if="option.hint" class="tooltip" :title="option.hint">
-             ?
-           </span>
-         </label>
-       </div>
+        <label>
+          <input
+            type="radio"
+            :name="'question-' + currentQuestion.id"
+            :value="option.id"
+            v-model="answers[currentQuestion.id]"
+            @change="onOptionChange(option)"
+          />
+          <span v-html="option.text"></span>
+          <span v-if="option.hint" class="tooltip" :title="option.hint">?</span>
+        </label>
+        <!-- SubAnswers -->
+        <div v-if="option.subAnswers && answers[currentQuestion.id] && answers[currentQuestion.id] == option.id" class="subanswers">
+          <div v-for="subanswer in option.subAnswers" :key="subanswer.id" class="subanswer-option">
+            <label>
+              <input
+                type="radio"
+                :name="'subanswers-' + option.id"
+                :value="subanswer.id"
+                v-model="subAnswers[option.id]"
+                @change="onOptionChange(subanswer)"
+              />
+              <span v-html="subanswer.text"></span>
+              <span v-if="subanswer.hint" class="tooltip" :title="subanswer.hint">?</span>
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Кнопки навигации -->
     <div v-if="!loading" class="navigation-buttons">
       <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
-      <button v-if="currentQuestionIndex === questions.length - 1" @click="submitAnswers"
-        :disabled="!areAllQuestionsAnswered">
+      <button
+        v-if="currentQuestionIndex === questions.length - 1"
+        @click="submitAnswers"
+        :disabled="!areAllQuestionsAnswered"
+      >
         К результатам
       </button>
-      <button v-else @click="nextQuestion">
-        Вперёд
-      </button>
+      <button v-else @click="nextQuestion">Вперёд</button>
     </div>
 
     <!-- Прогресс-бар -->
     <div v-if="!loading" class="progress-bar">
-      <div v-for="(question, index) in questions" :key="question.id" class="progress-item"
+      <div
+        v-for="(question, index) in questions"
+        :key="question.id"
+        class="progress-item"
         :class="{ completed: isQuestionAnswered(question), active: currentQuestionIndex === index }"
-        @click="goToQuestion(index)" :title="question.text"></div>
+        @click="goToQuestion(index)"
+        :title="question.text"
+      ></div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "RiskAssessment",
-  components: {
-  },
   data() {
     return {
       questions: [], // Список вопросов
       currentQuestionIndex: 0, // Индекс текущего вопроса
-      answers: {}, // Ответы пользователя
+      answers: {}, // Ответы на основные вопросы
+      subAnswers: {}, // Ответы на подварианты
       loading: true, // Флаг загрузки
     };
   },
@@ -84,28 +109,43 @@ export default {
       }
       this.loadProgress();
     },
-    handleAnswerChange(option) {
-      if (!option.subanswers) return;
-      // Удаляем ответы на предыдущие subanswers, если пользователь выбрал другой ответ
-      this.answers = Object.fromEntries(
-        Object.entries(this.answers).filter(([key]) => !key.startsWith(`${option.id}-`))
-      );
+    onOptionChange(option) {
+      console.log("Выбранный вариант:", option);
+      this.saveProgress();
     },
-    updateSubanswers(parentId, subanswers) {
-      // Обновляем ответы на subanswers
-      Object.keys(subanswers).forEach((key) => {
-        this.answers[`${parentId}-${key}`] = subanswers[key];
-      });
+    saveProgress() {
+      localStorage.setItem("riskAssessmentAnswers", JSON.stringify(this.answers));
+      localStorage.setItem("riskAssessmentSubAnswers", JSON.stringify(this.subAnswers));
+      localStorage.setItem("riskAssessmentCurrentQuestion", this.currentQuestionIndex);
+    },
+    loadProgress() {
+      const savedAnswers = localStorage.getItem("riskAssessmentAnswers");
+      const savedSubAnswers = localStorage.getItem("riskAssessmentSubAnswers");
+      const savedQuestionIndex = localStorage.getItem("riskAssessmentCurrentQuestion");
+
+      if (savedAnswers) {
+        this.answers = JSON.parse(savedAnswers);
+      }
+      if (savedSubAnswers) {
+        this.subAnswers = JSON.parse(savedSubAnswers);
+      }
+      if (savedQuestionIndex) {
+        this.currentQuestionIndex = parseInt(savedQuestionIndex, 10);
+      }
     },
     isQuestionAnswered(question) {
-      if (!this.answers[question.id]) return false;
-      const selectedOption = question.answers.find((opt) => opt.id === this.answers[question.id]);
-      if (selectedOption && selectedOption.subanswers) {
-        return selectedOption.subanswers.every((sub) =>
-          this.isQuestionAnswered({ id: `${question.id}-${sub.id}`, answers: sub.answers })
-        );
+      const selectedOptionId = this.answers[question.id];
+      if (!selectedOptionId) {
+        return false; // Если ничего не выбрано, вопрос не считается отвеченным
       }
-      return true;
+
+      const selectedOption = question.answers.find(option => option.id === selectedOptionId);
+      if (selectedOption && selectedOption.subAnswers) {
+        // Если у выбранной опции есть subAnswers, проверяем, выбран ли subAnswer
+        return !!this.subAnswers[selectedOption.id];
+      }
+
+      return true; // Если нет subAnswers, вопрос считается отвеченным
     },
     nextQuestion() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
@@ -124,22 +164,9 @@ export default {
       this.saveProgress();
     },
     submitAnswers() {
+      console.log("Основные ответы:", this.answers);
+      console.log("Ответы на подварианты:", this.subAnswers);
       this.$router.push({ name: "results" });
-    },
-    saveProgress() {
-      localStorage.setItem("riskAssessmentAnswers", JSON.stringify(this.answers));
-      localStorage.setItem("riskAssessmentCurrentQuestion", this.currentQuestionIndex);
-    },
-    loadProgress() {
-      const savedAnswers = localStorage.getItem("riskAssessmentAnswers");
-      const savedQuestionIndex = localStorage.getItem("riskAssessmentCurrentQuestion");
-
-      if (savedAnswers) {
-        this.answers = JSON.parse(savedAnswers);
-      }
-      if (savedQuestionIndex) {
-        this.currentQuestionIndex = parseInt(savedQuestionIndex, 10);
-      }
     },
   },
   mounted() {
@@ -290,5 +317,14 @@ input[type="radio"]:checked {
 input[type="radio"]:focus {
   outline: none; /* Убираем стандартный фокус */
   box-shadow: 0 0 4px rgba(255, 255, 255, 0.8); /* Добавляем эффект фокуса */
+}
+
+/* Стили для subAnswers */
+.subanswers {
+  padding-left: 10px;
+}
+
+.subanswer-option {
+  margin-bottom: 10px;
 }
 </style>

@@ -48,9 +48,18 @@ export default {
       try {
         // Получение ответов пользователя из localStorage
         const answers = JSON.parse(localStorage.getItem("riskAssessmentAnswers"));
+        const subAnswers = JSON.parse(localStorage.getItem("riskAssessmentSubAnswers"));
 
         if (!answers) {
           throw new Error("Ответы пользователя не найдены.");
+        }
+
+        // Объединяем ответы с учётом subAnswers
+        const finalAnswers = { ...answers };
+        for (const [optionId, subAnswerId] of Object.entries(subAnswers || {})) {
+          if (finalAnswers[optionId]) {
+            finalAnswers[optionId] = subAnswerId; // Заменяем значение на выбранный subAnswer
+          }
         }
 
         // Отправка данных на сервер
@@ -59,7 +68,7 @@ export default {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(answers),
+          body: JSON.stringify(finalAnswers),
         });
 
         if (!response.ok) {
