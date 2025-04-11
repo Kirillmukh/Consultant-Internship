@@ -5,9 +5,10 @@
     <div v-else-if="error">{{ error }}</div>
     <div v-else>
       <div class="rating">
-        <p><strong>Ответов<br> c низким риском:</strong> {{ lowCount }}</p>
+        <p><strong>Ответов<br> c высоким риском:</strong> {{ highCount }}</p>
         <p><strong>c средним риском:</strong> {{ moderateCount }}</p>
-        <p><strong>c высоким риском:</strong> {{ highCount }}</p>
+        <p><strong>c низким риском:</strong> {{ lowCount }}</p>
+        <p>{{ summary }}</p>
       </div>
       <!-- <button @click="toggleDetails">
         {{ showDetails ? "Скрыть подробные результаты" : "Показать подробные результаты" }}
@@ -39,6 +40,7 @@ export default {
       lowCount: 0, // Количество пунктов с низким риском
       moderateCount: 0, // Количество пунктов с средним риском
       highCount: 0, // Количество пунктов с высоким риском
+      summary: '', // Общая информация о рисках
       showDetails: false, // Флаг для отображения подробных результатов
       loading: true, // Состояние загрузки
       error: null, // Ошибка, если запрос не удался
@@ -87,6 +89,7 @@ export default {
         this.lowCount = data.risks_count.Низкий;
         this.moderateCount = data.risks_count.Средний;
         this.highCount = data.risks_count.Высокий;
+        this.summary = data.summary || "Общая информация о рисках не предоставлена.";
       } catch (error) {
         this.error = error.message;
       } finally {
