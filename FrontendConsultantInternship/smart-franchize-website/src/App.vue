@@ -26,8 +26,10 @@
 </template>
 
 <script>
+import { sendHeartbeat, trackPageVisit } from "@/utils/tracking";
+
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {
       heartbeatInterval: null, // Таймер для heartbeat
@@ -45,32 +47,6 @@ export default {
     }
   },
   methods: {
-    sendHeartbeat() {
-      // Собираем данные о текущем состоянии
-      const data = {
-        timestamp: new Date().toISOString(),
-        currentPage: this.$route.name, // Текущая страница
-        userAgent: navigator.userAgent, // Информация о браузере
-      };
-
-      // Отправляем данные на сервер
-      fetch(`${process.env.VUE_APP_BACKEND_URL}/api/heartbeat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Ошибка при отправке heartbeat');
-          }
-          console.log('Heartbeat отправлен:', data);
-        })
-        .catch((error) => {
-          console.error('Ошибка heartbeat:', error);
-        });
-    },
     navigateToRiskAssessment() {
       // Проверяем наличие прогресса в localStorage
       const progress = localStorage.getItem('riskAssessmentAnswers');
@@ -84,8 +60,15 @@ export default {
     },
   },
   mounted() {
-    // Запускаем heartbeat при загрузке приложения
-    this.heartbeatInterval = setInterval(this.sendHeartbeat, 30000); // Отправка каждые 30 секунд
+    // Запускаем heartbeat каждые 30 секунд
+    this.heartbeatInterval = setInterval(() => {
+      sendHeartbeat(this.$route.name);
+    }, 30000);
+
+    // Отслеживаем переходы между страницами
+    this.$router.afterEach((to, from) => {
+      trackPageVisit(to, from);
+    });
   },
   beforeUnmount() {
     // Очищаем таймер при уничтожении компонента
