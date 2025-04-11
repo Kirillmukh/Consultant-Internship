@@ -25,14 +25,12 @@ window.addEventListener("scroll", () => {
 export function sendHeartbeat(routeName) {
   // Извлекаем текущий вопрос из localStorage
   const currentQuestionIndex = parseInt(localStorage.getItem("riskAssessmentCurrentQuestion"), 10);
-  const questions = JSON.parse(localStorage.getItem("riskAssessmentQuestions")) || [];
-  const currentQuestionId = questions[currentQuestionIndex]?.id || null;
 
   const data = {
     sessionId: getSessionId(), // Идентификатор сессии
     timestamp: new Date().toISOString(),
     currentPage: routeName, // Текущая страница
-    currentQuestionId, // ID текущего вопроса
+    currentQuestionIndex, // ID текущего вопроса
     maxScrollDepth, // Максимальная достигнутая прокрутка
     currentScrollDepth, // Текущая прокрутка
     userAgent: navigator.userAgent, // Информация о браузере
