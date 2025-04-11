@@ -17,5 +17,5 @@ public class ResultRisksResponse {
     @JsonProperty("risks_count")
     private NavigableMap<String, Integer> riskCount;
     private List<ResultRisk> data;
-
+    private String summary;
 }
