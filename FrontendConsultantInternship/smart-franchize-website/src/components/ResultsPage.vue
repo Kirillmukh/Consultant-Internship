@@ -148,7 +148,7 @@ h1{
 
 .result-item {
   margin-bottom: 20px;
-  padding: 15px;
+  padding: 20px;
   border-radius: 5px;
   text-align: left;
   background-color: white;
