@@ -25,6 +25,16 @@
           <p v-if="item.explanation"><strong>ПОЧЕМУ:</strong> <span v-html="item.explanation"></span></p>
           <p v-if="item.legal_basis"><strong>ПРАВОВОЕ ОБОСНОВАНИЕ:</strong> <span v-html="item.legal_basis"></span></p>
           <p v-if="item.note"><strong>ОБРАТИТЕ ВНИМАНИЕ!</strong> <span v-html="item.note"></span></p>
+
+          <!-- Кликабельный текст для показа/скрытия рекомендаций -->
+          <p v-if="item.recommendation" @click="toggleRecommendation(index)" style="color: #836645; cursor: pointer; text-decoration: underline;">
+            {{ item.showRecommendation ? "Скрыть рекомендации" : "Показать рекомендации" }}
+          </p>
+
+          <!-- Рекомендации -->
+          <p v-if="item.showRecommendation && item.recommendation">
+            <strong>РЕКОМЕНДАЦИЯ:</strong> <span v-html="item.recommendation"></span>
+          </p>
         </li>
       </ul>
     </div>
@@ -88,6 +98,8 @@ export default {
           risk_level: item.risk_level,
           explanation: item.explanation,
           note: item.note || null, // Только если есть
+          recommendation: item.recommendation || null, // Только если есть
+          showRecommendation: false, // Флаг для отображения рекомендаций
         }));
         this.lowCount = data.risks_count.Низкий;
         this.moderateCount = data.risks_count.Средний;
@@ -117,6 +129,9 @@ export default {
         default:
           return "inherit"; // Черный для низкого риска
       }
+    },
+    toggleRecommendation(index) {
+      this.results[index].showRecommendation = !this.results[index].showRecommendation;
     },
   },
   mounted() {
