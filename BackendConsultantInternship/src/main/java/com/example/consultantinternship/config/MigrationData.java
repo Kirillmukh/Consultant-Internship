@@ -14,7 +14,7 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class MigrationData {
-//    @Bean
+    //    @Bean
     public CommandLineRunner migrate(QuestionRepository questionRepository) {
         return args -> {
             // Категория 1: Условие о ведении деятельности исключительно на определенной территории
@@ -310,6 +310,10 @@ public class MigrationData {
 
             suppliesAnswers.add(suppliesAnswer1);
             suppliesAnswers.add(suppliesAnswer2);
+            final String NOTE_OPENING_LINK = """
+                    Для более полного понимания условия по определению поставщиков и иных смежных вопросов рекомендуем Вам ознакомиться с памяткой <a href="/memo/opening.html" target="_blank">Условия по открытию франшизы</a>
+                    """;
+            this.appendExtraNote(suppliesAnswers, NOTE_OPENING_LINK);
             suppliesQuestion.setAnswers(suppliesAnswers);
             questionRepository.save(suppliesQuestion);
 
@@ -336,6 +340,7 @@ public class MigrationData {
 
             equipmentAnswers.add(equipmentAnswer1);
             equipmentAnswers.add(equipmentAnswer2);
+            this.appendExtraNote(equipmentAnswers, NOTE_OPENING_LINK);
             equipmentQuestion.setAnswers(equipmentAnswers);
             questionRepository.save(equipmentQuestion);
 
@@ -343,7 +348,7 @@ public class MigrationData {
             Question consultationsQuestion = new Question();
             consultationsQuestion.setTitle("КОНСУЛЬТАЦИИ");
             consultationsQuestion.setQuestionText("Указано ли в Вашем договоре обязанность Правообладателя консультировать Пользователя по вопросам деятельности франшизы?");
-            consultationsQuestion.setQuestionHint("Примеры направлений консультирования:\n" +
+            final String CONSULTATION_HINT = "Примеры направлений консультирования:\n" +
                     "- по выбору Помещений (месторасположение и технические характеристики, определяющие возможность размещения Предприятия в помещении), и консультирование Пользователя по оптимальному выбору месторасположения и пригодности выбранного Пользователем Помещения для размещения Предприятия;\n" +
                     "- по планированию распределения площадей и расположению оборудования;\n" +
                     "- по управлению и функционированию Предприятия;\n" +
@@ -352,7 +357,7 @@ public class MigrationData {
                     "- по оформлению (дизайну) Предприятия, дизайну и расстановке мебели и декоративным элементам;\n" +
                     "- по вопросам финансов, управления, кадров и кадровой политики, администрирования и продвижения Продукции, направленное на ведение деятельности Предприятия наиболее эффективным способом;\n" +
                     "- по вопросам лицензирования деятельности Предприятия и сертификации Продукции;\n" +
-                    "- по дополнительно возникающим вопросам, имеющим непосредственное отношение к Системе и т.д.\n");
+                    "- по дополнительно возникающим вопросам, имеющим непосредственное отношение к Системе и т.д.";
 
             List<Answer> consultationsAnswers = new ArrayList<>();
 
@@ -361,8 +366,8 @@ public class MigrationData {
             consultationsAnswer1.setText("Прописана обязанность Правообладателя консультировать Пользователя по широкому кругу вопросов");
             consultationsAnswer1.setRisk("Низкий");
             consultationsAnswer1.setExplanation("""
-                            Гражданским Кодексом в <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=493202&dst=102454&cacheid=07034A6902A2A137393E74C940771080&mode=splus&rnd=5Btq4g#L0cyshUe8hvMPUaM" target="_blank">ст.1031 РФ</a> закреплена обязанность Правообладателя обеспечить проведение консультаций. Отсутствие надлежащим образом оформленных лицензий влечет риск привлечения Вас к юридической ответственности.  закреплена обязанность Правообладателя обеспечить проведение консультаций. Если прописан широкий круг направлений консультирования, Правообладатель не сможет отказаться от дачи советов по указанным вопросам.
-                            """);
+                    Гражданским Кодексом в <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=493202&dst=102454&cacheid=07034A6902A2A137393E74C940771080&mode=splus&rnd=5Btq4g#L0cyshUe8hvMPUaM" target="_blank">ст.1031 РФ</a> закреплена обязанность Правообладателя обеспечить проведение консультаций. Отсутствие надлежащим образом оформленных лицензий влечет риск привлечения Вас к юридической ответственности.  закреплена обязанность Правообладателя обеспечить проведение консультаций. Если прописан широкий круг направлений консультирования, Правообладатель не сможет отказаться от дачи советов по указанным вопросам.
+                    """);
             consultationsAnswer1.setQuestion(consultationsQuestion);
 
             // Ответ 9.2
@@ -370,9 +375,9 @@ public class MigrationData {
             consultationsAnswer2.setText("Прописана обязанность Правообладателя консультировать Пользователя, но не указано, по каким именно вопросам");
             consultationsAnswer2.setRisk("Средний");
             consultationsAnswer2.setExplanation("""
-                            В <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=493202&dst=102454&cacheid=07034A6902A2A137393E74C940771080&mode=splus&rnd=5Btq4g#L0cyshUe8hvMPUaM" target="_blank">статье 1031 Гражданского кодекса РФ</a> закреплена обязанность Правообладателя обеспечить проведение консультаций. Отсутствие надлежащим образом оформленных лицензий влечет риск привлечения Вас к юридической ответственности. закреплена обязанность Правообладателя обеспечить проведение консультаций. Если в договоре не указаны конкретные направления консультаций, между Вами и Правообладателем могут возникнуть недопонимания и разногласия.
-                            """);
-            consultationsAnswer2.setNote("Рекомендуем Вам дополнительно согласовать эти вопросы с Правообладателем. Если не представляется возможным внести соответствующее изменение в договор, советуем провести переговоры по заключению дополнительного соглашения. Если же в результате переговоров Вам не удалось достичь заключения дополнительного соглашения, советуем Вам составить протокол разногласий.");
+                    В <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=493202&dst=102454&cacheid=07034A6902A2A137393E74C940771080&mode=splus&rnd=5Btq4g#L0cyshUe8hvMPUaM" target="_blank">статье 1031 Гражданского кодекса РФ</a> закреплена обязанность Правообладателя обеспечить проведение консультаций. Отсутствие надлежащим образом оформленных лицензий влечет риск привлечения Вас к юридической ответственности. закреплена обязанность Правообладателя обеспечить проведение консультаций. Если в договоре не указаны конкретные направления консультаций, между Вами и Правообладателем могут возникнуть недопонимания и разногласия.
+                    """);
+            consultationsAnswer2.setNote("Рекомендуем Вам дополнительно согласовать эти вопросы с Правообладателем. Если не представляется возможным внести соответствующее изменение в договор, советуем провести переговоры по заключению дополнительного соглашения. Если же в результате переговоров Вам не удалось достичь заключения дополнительного соглашения, советуем Вам составить протокол разногласий." + CONSULTATION_HINT);
             consultationsAnswer2.setQuestion(consultationsQuestion);
 
             // Ответ 9.3
@@ -382,7 +387,7 @@ public class MigrationData {
             consultationsAnswer3.setExplanation("""
                     В <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=493202&dst=102454&cacheid=07034A6902A2A137393E74C940771080&mode=splus&rnd=5Btq4g#L0cyshUe8hvMPUaM" target="_blank">статье 1031 Гражданского кодекса РФ</a> закреплена обязанность Правообладателя обеспечить проведение консультаций. Отсутствие надлежащим образом оформленных лицензий влечет риск привлечения Вас к юридической ответственности.  закреплена обязанность Правообладателя обеспечить проведение консультаций. Если в договоре не указано на такую обязанность, у Вас могут возникнуть организационные, финансовые и иные трудности при ведении бизнеса.
                     """);
-            consultationsAnswer3.setNote("Рекомендуем Вам дополнительно согласовать эти вопросы с Правообладателем. Если не представляется возможным внести соответствующее изменение в договор, советуем провести переговоры по заключению дополнительного соглашения. Если же в результате переговоров Вам не удалось достичь заключения дополнительного соглашения, советуем Вам составить протокол разногласий.");
+            consultationsAnswer3.setNote("Рекомендуем Вам дополнительно согласовать эти вопросы с Правообладателем. Если не представляется возможным внести соответствующее изменение в договор, советуем провести переговоры по заключению дополнительного соглашения. Если же в результате переговоров Вам не удалось достичь заключения дополнительного соглашения, советуем Вам составить протокол разногласий." + CONSULTATION_HINT);
             consultationsAnswer3.setQuestion(consultationsQuestion);
 
             consultationsAnswers.add(consultationsAnswer1);
@@ -426,7 +431,7 @@ public class MigrationData {
             inspectionAnswers.add(inspectionAnswer1);
             inspectionAnswers.add(inspectionAnswer2);
             inspectionAnswers.add(inspectionAnswer3);
-            inspectionAnswers.forEach(answer -> answer.setHint("Пример формулировки для направлений проверок: \n" +
+            this.appendExtraNote(inspectionAnswers, "\nПример формулировки для направлений проверок: \n" +
                     "Проверка работы Предприятия осуществляется Правообладателем в следующих направлениях:  \n" +
                     "соблюдение единой символики, стиля и правил использования Знаков Правообладателя;\n" +
                     "соблюдение технологий работы Предприятия и правил обслуживания клиентов.)\n\nПример формулировки для форм проверок:\n" +
@@ -435,8 +440,7 @@ public class MigrationData {
                     "контрольное приобретение услуги Пользователя;\n" +
                     "собеседование с сотрудниками Предприятия;\n" +
                     "проверка документации, связанной с презентацией услуг Предприятия;\n" +
-                    "проверка наличия у Пользователя Документации и выполнения требований Правообладателя по его использованию.\n"));
-
+                    "проверка наличия у Пользователя Документации и выполнения требований Правообладателя по его использованию.");
             inspectionQuestion.setAnswers(inspectionAnswers);
             questionRepository.save(inspectionQuestion);
 
@@ -668,12 +672,17 @@ public class MigrationData {
             guaranteesAnswer2.setRisk("Средний");
             guaranteesAnswer2.setExplanation(
                     """
-                            Отсутствие приведенных выше условий лучше, чем их наличие, однако их отсутствие не является гарантией успешности бизнеса, необходимо предусмотреть некоторые гарантии по договору <a href="/memo/assurances" target="_blank">(см. памятку “о заверениях правообладателя”)</a>
+                            Отсутствие приведенных выше условий лучше, чем их наличие, однако их отсутствие не является гарантией успешности бизнеса, необходимо предусмотреть некоторые гарантии по договору.
                             """);
             guaranteesAnswer2.setQuestion(guaranteesQuestion);
 
             guaranteesAnswers.add(guaranteesAnswer1);
             guaranteesAnswers.add(guaranteesAnswer2);
+            guaranteesAnswers.forEach(answer -> {
+                answer.setExplanation(answer.getExplanation() + "\n" + """
+                        <a href="/memo/assurances.html" target="_blank">(см. памятку “о заверениях правообладателя”)</a>
+                        """);
+            });
             guaranteesQuestion.setAnswers(guaranteesAnswers);
             questionRepository.save(guaranteesQuestion);
 
@@ -708,4 +717,14 @@ public class MigrationData {
             log.info("Данные успешно загружены в базу данных");
         };
     }
+
+    private void appendExtraNote(List<Answer> answers, String note) {
+        answers.forEach(answer -> {
+            if (answer.getNote() != null) {
+                answer.setNote(answer.getNote() + "\n" + note);
+            } else {
+                answer.setNote(note);
+            }
+        });
+    } // добавить памятку
 }
