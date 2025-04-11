@@ -32,7 +32,6 @@ export function sendHeartbeat(routeName) {
     sessionId: getSessionId(), // Идентификатор сессии
     timestamp: new Date().toISOString(),
     currentPage: routeName, // Текущая страница
-    currentQuestionIndex, // Индекс текущего вопроса
     currentQuestionId, // ID текущего вопроса
     maxScrollDepth, // Максимальная достигнутая прокрутка
     currentScrollDepth, // Текущая прокрутка
