@@ -115,7 +115,7 @@ export default {
         case "Средний":
           return "#F8822E"; // Оранжевый для среднего риска
         default:
-          return "black"; // Черный для низкого риска
+          return "inherit"; // Черный для низкого риска
       }
     },
   },

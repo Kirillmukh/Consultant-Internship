@@ -8,7 +8,7 @@
     </p>
     <p>
       <b>Существенными условиями договора коммерческой концессии (франчайзинга) признаются (<a
-          href='https://www.consultant.ru/document/cons_doc_LAW_9027/49c2afdf04c1ba13e815aa8b44287cd4b6cac9f5/'
+          href='https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=493202&dst=102434'
           target='_blank'>Статья 1027 ГК РФ</a>):</b>
     </p>
     <ul>
