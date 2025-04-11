@@ -3,7 +3,6 @@ import { getSessionId } from "./session";
 
 const API_URL = process.env.VUE_APP_BACKEND_URL;
 
-let maxScrollDepth = 0; // Глобальная переменная для хранения максимальной прокрутки
 let currentScrollDepth = 0; // Переменная для хранения текущей прокрутки
 
 // Отслеживание прокрутки
@@ -17,9 +16,6 @@ window.addEventListener("scroll", () => {
     100,
     Math.round((scrollTop + windowHeight) / documentHeight * 100)
   );
-
-  // Сохраняем максимальную достигнутую прокрутку
-  maxScrollDepth = Math.max(maxScrollDepth, currentScrollDepth);
 });
 
 export function sendHeartbeat(routeName) {
@@ -31,7 +27,6 @@ export function sendHeartbeat(routeName) {
     timestamp: new Date().toISOString(),
     currentPage: routeName, // Текущая страница
     currentQuestionIndex, // ID текущего вопроса
-    maxScrollDepth, // Максимальная достигнутая прокрутка
     currentScrollDepth, // Текущая прокрутка
     userAgent: navigator.userAgent, // Информация о браузере
   };
