@@ -443,7 +443,7 @@ public class MigrationData {
             // Категория ИЗМЕНЕНИЯ В ИСКЛЮЧИТЕЛЬНЫХ ПРАВАХ
             Question specificLawsQuestion = new Question();
             specificLawsQuestion.setTitle("ИЗМЕНЕНИЯ В ИСКЛЮЧИТЕЛЬНЫХ ПРАВАХ");
-            specificLawsQuestion.setTitle("Является ли переход к другому лицу какого-либо исключительного права, указанного в Вашем договоре, основанием для изменения или расторжения договора?");
+            specificLawsQuestion.setQuestionText("Является ли переход к другому лицу какого-либо исключительного права, указанного в Вашем договоре, основанием для изменения или расторжения договора?");
             specificLawsQuestion.setQuestionHint("Обычно это условие содержится в пункте «Действие договора»");
 
             List<Answer> specificLawsAnswers = new ArrayList<>();

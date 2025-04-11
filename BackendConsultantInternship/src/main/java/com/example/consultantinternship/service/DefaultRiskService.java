@@ -56,6 +56,10 @@ public class DefaultRiskService implements RiskService {
             QuestionResultDTO question = cacheService.getQuestion(key);
             AnswerResultDTO answer = cacheService.getAnswer(value);
 
+            if (answer.getRisk() == null) {
+                throw new WrongIdException("Wrong answer id where id = " + value);
+            }
+
             riskCount.put(answer.getRisk(), riskCount.getOrDefault(answer.getRisk(), 0) + 1);
             ResultRisk resultRisk = ResultRisk.from(question, answer);
 
