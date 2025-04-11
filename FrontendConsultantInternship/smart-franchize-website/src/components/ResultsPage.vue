@@ -13,12 +13,15 @@
       <!-- <button @click="toggleDetails">
         {{ showDetails ? "Скрыть подробные результаты" : "Показать подробные результаты" }}
       </button> -->
-      <ul >
+      <ul>
         <li v-for="(item, index) in results" :key="index" class="result-item">
           <strong>{{ item.title }}</strong>
           <p><strong>Вопрос:</strong> {{ item.question }}</p>
           <p><strong>Ваш ответ:</strong> {{ item.answer }}</p>
-          <p><strong>УРОВЕНЬ РИСКА:</strong> {{ item.risk_level }}</p>
+          <p>
+            <strong>УРОВЕНЬ РИСКА: </strong>
+            <span :style="{ color: getRiskColor(item.risk_level) }">{{ item.risk_level }}</span>
+          </p>
           <p v-if="item.explanation"><strong>ПОЧЕМУ:</strong> <span v-html="item.explanation"></span></p>
           <p v-if="item.legal_basis"><strong>ПРАВОВОЕ ОБОСНОВАНИЕ:</strong> <span v-html="item.legal_basis"></span></p>
           <p v-if="item.note"><strong>ОБРАТИТЕ ВНИМАНИЕ!</strong> <span v-html="item.note"></span></p>
@@ -104,6 +107,16 @@ export default {
     },
     goToNextPage() {
       this.$router.push({ name: "non-contractual-risks" });
+    },
+    getRiskColor(riskLevel) {
+      switch (riskLevel) {
+        case "Высокий":
+          return "#F82E2E"; // Красный для высокого риска
+        case "Средний":
+          return "#F8822E"; // Оранжевый для среднего риска
+        default:
+          return "black"; // Черный для низкого риска
+      }
     },
   },
   mounted() {
