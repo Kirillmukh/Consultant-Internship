@@ -1,7 +1,8 @@
 <template>
   <div class="risk-assessment">
     <h1 v-if="loading">Вопросы загружаются...</h1>
-    <h1 v-else>Вопрос {{ currentQuestionIndex + 1 }}</h1>
+    <!--<h1 v-else>Вопрос {{ currentQuestionIndex + 1 }}</h1>-->
+    <h1 v-else>{{ currentQuestion.title }}</h1>
 
     <!-- Текущий вопрос -->
     <div v-if="!loading && currentQuestion">

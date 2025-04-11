@@ -14,6 +14,7 @@
       </button> -->
       <ul >
         <li v-for="(item, index) in results" :key="index" class="result-item">
+          <strong>{{ item.title }}</strong>
           <p><strong>Вопрос:</strong> {{ item.question }}</p>
           <p><strong>Ваш ответ:</strong> {{ item.answer }}</p>
           <p><strong>УРОВЕНЬ РИСКА:</strong> {{ item.risk_level }}</p>
@@ -76,7 +77,7 @@ export default {
         // Получение результатов
         const data = await response.json();
         this.results = data.data.map((item) => ({
-          title: item.title || "Без названия", // Заголовок (если есть)
+          title: item.question_title || "Без названия", // Заголовок (если есть)
           question: item.question,
           answer: item.answer,
           risk_level: item.risk_level,
