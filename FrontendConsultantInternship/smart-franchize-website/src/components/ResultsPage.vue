@@ -54,11 +54,9 @@ export default {
           throw new Error("Ответы пользователя не найдены.");
         }
 
-        // Объединяем ответы с учётом subAnswers
-        const finalAnswers = { ...answers };
-        for (const [optionId, subAnswerId] of Object.entries(subAnswers || {})) {
-          if (finalAnswers[optionId]) {
-            finalAnswers[optionId] = subAnswerId; // Заменяем значение на выбранный subAnswer
+        for (const [questionId, optionId] of Object.entries(answers)) {
+          if (subAnswers && subAnswers[optionId]) {
+            answers[questionId] = subAnswers[optionId]; // Заменяем ответ на subAnswer
           }
         }
 
@@ -68,7 +66,7 @@ export default {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(finalAnswers),
+          body: JSON.stringify(answers),
         });
 
         if (!response.ok) {
