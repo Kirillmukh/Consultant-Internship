@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Tag(name = "Risks")
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +39,9 @@ public class QuestionController {
     )
     @GetMapping("/questions")
     public ResponseEntity<List<QuestionDTO>> getQuestions() {
+        log.info("GET /api/v1/questions");
         List<QuestionDTO> responseBody = riskService.getAllQuestions();
+        log.info("response 200 OK GET /api/v1/questions");
         return ResponseEntity.ok(responseBody);
     }
 
@@ -141,12 +145,15 @@ public class QuestionController {
     )
     @PostMapping("/submit-answers")
     public ResponseEntity<ResultRisksResponse> analyseRisks(@RequestBody Map<String, String> map) throws WrongIdException {
+        log.info("request POST /api/v1/submit-answers\nRequest body ody: {}", map);
         ResultRisksResponse responseBody = riskService.analyzeAnswers(map);
+        log.info("response 200 OK POST /api/v1/submit-answers\nResponse body: {}", responseBody);
         return ResponseEntity.ok(responseBody);
     }
 
     @ExceptionHandler(WrongIdException.class)
     public ResponseEntity<ExceptionPayload> handleException(WrongIdException e) {
+        log.warn("response: 400 BAD REQUEST: wrong id exception: {}", e.getMessage());
         return ResponseEntity.badRequest().body(new ExceptionPayload("WrongIdException", e.getMessage()));
     }
 
