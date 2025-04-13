@@ -227,7 +227,7 @@ h1 {
 }
 
 .tooltip {
-  cursor: pointer;
+  cursor: default;
   display: inline-flex;
   align-items: center;
   justify-content: center;
