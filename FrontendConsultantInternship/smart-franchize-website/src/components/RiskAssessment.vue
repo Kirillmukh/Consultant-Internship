@@ -8,7 +8,7 @@
     <div v-if="!loading && currentQuestion">
       <p class="question_body">
         {{ currentQuestion.text }}
-        <span v-if="currentQuestion.hint" class="tooltip" :title="currentQuestion.hint">
+        <span v-if="currentQuestion.hint" class="tooltip" :data-tooltip="currentQuestion.hint.replace(/\n$/, '').replaceAll('\n', '\n\n')">
           ?
         </span>
       </p>
@@ -24,7 +24,7 @@
             @change="onOptionChange(option)"
           />
           <span v-html="option.text"></span>
-          <span v-if="option.hint" class="tooltip" :title="option.hint">?</span>
+          <span v-if="option.hint" class="tooltip" :data-tooltip="option.hint.replace(/\n$/, '').replaceAll('\n', '\n\n')">?</span>
         </label>
         <!-- SubAnswers -->
         <div v-if="option.subAnswers && answers[currentQuestion.id] && answers[currentQuestion.id] == option.id" class="subanswers">
@@ -38,7 +38,7 @@
                 @change="onOptionChange(subanswer)"
               />
               <span v-html="subanswer.text"></span>
-              <span v-if="subanswer.hint" class="tooltip" :title="subanswer.hint">?</span>
+              <span v-if="subanswer.hint" class="tooltip" :data-tooltip="subanswer.hint.replace(/\n$/, '').replaceAll('\n', '\n\n')">?</span>
             </label>
           </div>
         </div>
@@ -242,10 +242,49 @@ h1 {
   margin-left: 4px;
   position: relative;
   top: -0.4em;
+
 }
 
 .tooltip:hover {
   background-color: #91582F;
+}
+
+.tooltip::after {
+	background: white;
+	border-radius: 8px 8px 8px 8px;
+  border: #836645 solid 3px;
+	box-shadow: 1px 1px 10px #836645;
+  color: black;
+	content: attr(data-tooltip); /* Главная часть кода, определяющая содержимое всплывающей подсказки */
+	margin-top: -24px;
+	opacity: 0; /* Наш элемент прозрачен... */
+	padding: 7px 7px;
+	position: absolute;
+	visibility: hidden; /* ...и скрыт. */
+  white-space: break-spaces; /* Разрешаем перенос текста */
+  /* размер шрифта */
+  font-size: 12px;
+  line-height: 1.2em;
+  /* отключаем наследование форматирования */
+  text-align: left;
+  text-decoration: none;
+  text-transform: none;
+  font-weight: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-stretch: normal;
+  /* включаем адаптивную ширину */
+  width: max-content;
+  min-width: 300px;
+  max-width: 500px;
+
+	transition: all 0.4s ease-in-out; /* Добавить плавности по вкусу */
+}
+
+		
+.tooltip:hover::after {
+	opacity: 1; /* Показываем его */
+	visibility: visible;
 }
 
 .option {
