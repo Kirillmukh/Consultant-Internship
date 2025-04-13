@@ -281,10 +281,10 @@ h1 {
 	transition: all 0.4s ease-in-out; /* Добавить плавности по вкусу */
 }
 
-		
 .tooltip:hover::after {
 	opacity: 1; /* Показываем его */
 	visibility: visible;
+  transition-delay: 0.5s; /* Задержка перед появлением подсказки */
 }
 
 .option {
