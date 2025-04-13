@@ -22,9 +22,9 @@
             <strong>УРОВЕНЬ РИСКА: </strong>
             <span :style="{ color: getRiskColor(item.risk_level) }">{{ item.risk_level }}</span>
           </p>
-          <p v-if="item.explanation"><strong>ПОЧЕМУ:</strong> <span v-html="item.explanation"></span></p>
-          <p v-if="item.legal_basis"><strong>ПРАВОВОЕ ОБОСНОВАНИЕ:</strong> <span v-html="item.legal_basis"></span></p>
-          <p v-if="item.note"><strong>ОБРАТИТЕ ВНИМАНИЕ!</strong> <span v-html="item.note"></span></p>
+          <p v-if="item.explanation"><strong>ПОЧЕМУ:</strong> <span v-html="item.explanation.replaceAll('\n', '<br>')"></span></p>
+          <p v-if="item.legal_basis"><strong>ПРАВОВОЕ ОБОСНОВАНИЕ:</strong> <span v-html="item.legal_basis.replaceAll('\n', '<br>')"></span></p>
+          <p v-if="item.note"><strong>ОБРАТИТЕ ВНИМАНИЕ!</strong> <span v-html="item.note.replaceAll('\n', '<br>')"></span></p>
 
           <!-- Кликабельный текст для показа/скрытия рекомендаций -->
           <p v-if="item.recommendation" @click="toggleRecommendation(index)" style="color: #836645; cursor: pointer; text-decoration: underline;">
