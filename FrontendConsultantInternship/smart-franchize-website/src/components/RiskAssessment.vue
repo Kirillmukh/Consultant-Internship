@@ -298,6 +298,7 @@ h1 {
 
 .option span {
   text-align: left;
+  vertical-align: middle;
   /* Выравнивание текста по левому краю */
 }
 
