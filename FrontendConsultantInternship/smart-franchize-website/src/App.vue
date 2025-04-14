@@ -88,7 +88,7 @@ export default {
   text-align: center;
   color: #333;
   line-height: 1.6;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
 }
 
@@ -110,6 +110,7 @@ header {
   max-width: 450px; /* Ширина блока */
   height: 87px; /* Высота блока */
   margin: 0px;
+  margin-left: 1px;
   top: 27px;
   left: -25px;
 }
