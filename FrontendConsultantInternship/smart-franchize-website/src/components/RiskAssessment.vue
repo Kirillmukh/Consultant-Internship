@@ -348,6 +348,7 @@ input[type="radio"] {
   background-color: white; /* Прозрачный фон */
   cursor: pointer; /* Указатель при наведении */
   display: inline-block;
+  margin-bottom: 0;
 }
 
 input[type="radio"]:checked {
