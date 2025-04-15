@@ -96,7 +96,7 @@ export default {
 header {
   max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
+  margin: 1px auto;
   padding: 0px 20px;
   text-align: center;
   font-family: 'Tektur';
@@ -107,23 +107,23 @@ header {
 .logo_div {
   position: relative;
   cursor: pointer;
-  max-width: 450px; /* Ширина блока */
+  width: 450px; /* Ширина блока */
   height: 87px; /* Высота блока */
   margin: 0px;
   margin-left: 1px;
   top: 27px;
-  left: -25px;
+  left: 0;
 }
 
 .logo  {
 
   position: relative;
   cursor: pointer;
-  max-width: 450px; /* Ширина блока */
+  width: 450px; /* Ширина блока */
   height: 87px; /* Высота блока */
   margin: 0px;
   top: 27px;
-  left: -25px;
+  left: 0;
 }
 
 header .home-link {
