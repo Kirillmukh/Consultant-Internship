@@ -169,9 +169,21 @@ export default {
       console.log("Ответы на подварианты:", this.subAnswers);
       this.$router.push({ name: "results" });
     },
+    handleKeyPress(event) {
+      if (event.key === "ArrowRight") {
+        this.nextQuestion();
+      } else if (event.key === "ArrowLeft") {
+        this.prevQuestion();
+      }
+    },
   },
   mounted() {
     this.fetchQuestions();
+    window.addEventListener("keydown", this.handleKeyPress);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("keydown", this.handleKeyPress);
   },
 };
 </script>
