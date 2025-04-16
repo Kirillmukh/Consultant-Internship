@@ -14,7 +14,7 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class MigrationData {
-    //    @Bean
+//    @Bean
     public CommandLineRunner migrate(QuestionRepository questionRepository) {
         return args -> {
             // Категория 1: Условие о ведении деятельности исключительно на определенной территории
@@ -116,6 +116,7 @@ public class MigrationData {
             royaltyAnswer5.setText("Смешанные");
             royaltyAnswer5.setRisk("Средний");
             royaltyAnswer5.setExplanation("Преимуществом для франчайзи является гарантированный минимум для франчайзера, но гибкость при росте продаж. Неблагоприятным моментом можно назвать невыгодность такого условия при низкой маржинальности бизнеса. Такое условие сочетает риски фиксированных и процентных платежей.");
+            royaltyAnswer5.setHint("Фиксированная сумма + проценты");
             royaltyAnswer5.setQuestion(royaltyQuestion);
 
             // Ответ 2.6

@@ -310,6 +310,7 @@ h1 {
 
 .option span {
   text-align: left;
+  vertical-align: middle;
   /* Выравнивание текста по левому краю */
 }
 
@@ -359,6 +360,7 @@ input[type="radio"] {
   background-color: white; /* Прозрачный фон */
   cursor: pointer; /* Указатель при наведении */
   display: inline-block;
+  margin-bottom: -2px;
 }
 
 input[type="radio"]:checked {
