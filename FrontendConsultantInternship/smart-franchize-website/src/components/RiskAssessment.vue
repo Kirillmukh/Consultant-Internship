@@ -110,8 +110,7 @@ export default {
       }
       this.loadProgress();
     },
-    onOptionChange(option) {
-      console.log("Выбранный вариант:", option);
+    onOptionChange() {
       this.saveProgress();
     },
     saveProgress() {
